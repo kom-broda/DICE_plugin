@@ -87,13 +87,14 @@ public class NetworkManager {
 	 * @param scenario The scenario parameter
 	 * @throws UnsupportedEncodingException 
 	 */
-	public void sendModel(File file_1,File file_2, String scenario) throws UnsupportedEncodingException{
+	public void sendModel(File[] files, String scenario) throws UnsupportedEncodingException{
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost httppost = new HttpPost(modelUploadEndpoint);
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();  
 		builder.addPart("scenario",new StringBody(scenario,ContentType.DEFAULT_TEXT));
-	    builder.addPart("file[]", new FileBody(file_1));
-	    builder.addPart("file[]", new FileBody(file_2));
+		for(File file:files){
+			builder.addPart("file[]", new FileBody(file));
+		}
 	    httppost.setEntity(builder.build());
 	    CloseableHttpResponse response;
 	    try {
