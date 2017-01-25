@@ -29,6 +29,7 @@ public class NetworkManager {
 	private static String rootEndpoint = "http://specclient1.dei.polimi.it:8080";
 	private static String alternativesEndpoint = rootEndpoint+"/alternatives";
 	private static String modelUploadEndpoint = rootEndpoint+"/files/upload";
+	private static String simulationSetupEndpoint = rootEndpoint+"/launch/simulationSetup";
 	
 	public static NetworkManager getInstance(){
 		if(instance != null){
@@ -37,6 +38,11 @@ public class NetworkManager {
 		instance = new NetworkManager();
 		return instance;
 		
+	}
+	public NetworkManager() {
+		System.setProperty("org.apache.commons.logging.Log","org.apache.commons.logging.impl.SimpleLog");
+		System.setProperty("org.apache.commons.logging.simplelog.showdatetime", "true");
+		System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.http.wire", "DEBUG");
 	}
 	/**
 	 * Fetches alternatives from the backend
@@ -102,6 +108,9 @@ public class NetworkManager {
 			if(response.getStatusLine().getStatusCode() != 302){
 				System.err.println("Error: POST not succesfull");
 			}
+			else{
+				this.simulationSetup();
+			}
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -109,6 +118,27 @@ public class NetworkManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	private void simulationSetup(){
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		HttpGet httpget = new HttpGet(simulationSetupEndpoint);
+		CloseableHttpResponse response;
+		try {
+			response = httpclient.execute(httpget);
+			if(response.getStatusLine().getStatusCode() != 200){
+				//
+			}
+			else{
+				response.close();
+			}
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	
