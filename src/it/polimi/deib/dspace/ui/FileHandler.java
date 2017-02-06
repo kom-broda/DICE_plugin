@@ -45,5 +45,15 @@ public class FileHandler {
 			e.printStackTrace();
 		}
 	}
+	public void setScenario(boolean isPrivate,boolean isELTC){
+		if(!isPrivate){
+			if(isELTC){
+				this.scenario="PublicPeakWorkload";
+			}else{
+				this.scenario="PublicAvgWorkLoad";
+			}
+		}
+		
+	}
 
 }
