@@ -25,7 +25,7 @@ public class ChoicePage extends WizardPage{
 	private GridLayout layout;
 	private Button pri;
 	private Button pub;
-	private boolean choice ; // t - public, f - private
+	private boolean choice ; // f - public, t - private
 	private int classes = 0;
 	private int alternatives;
 	private Text t1,h1,h2,h3;
@@ -124,7 +124,7 @@ public class ChoicePage extends WizardPage{
         
         pri.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
-            	choice = false;
+            	choice = true;
             	getWizard().getContainer().updateButtons();
             	System.out.println("Choice: PRIVATE");
             }
@@ -133,7 +133,7 @@ public class ChoicePage extends WizardPage{
         
         pub.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
-            	choice = true;
+            	choice = false;
             	getWizard().getContainer().updateButtons();
             	System.out.println("Choice: PUBLIC");
             }
