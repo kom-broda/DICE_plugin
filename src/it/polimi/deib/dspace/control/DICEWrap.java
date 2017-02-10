@@ -104,6 +104,7 @@ public class DICEWrap {
 						buildStormAnalyzableModel(c.getDtsmPath());
 						extractStormInitialMarking();
 						genGSPN();
+						renameFiles(c);
 					} catch (Exception e) {
 						System.out.println(e.getMessage());
 					}
@@ -164,7 +165,6 @@ public class DICEWrap {
 		ResourceSet set = new ResourceSetImpl();
 		Resource res = set.getResource(URI.createFileURI(umlModelPath), true);
 		result = builder.createAnalyzableModel((Model)res.getContents().get(0), new BasicEList<PrimitiveVariableAssignment>());
-		System.out.println("Hadoop builder created");
 	}
 	
 	public void extractHadoopInitialMarking(){
@@ -183,6 +183,21 @@ public class DICEWrap {
 		File targetFolder = new File(path);
 		GenerateGspn gspn = new GenerateGspn(((PetriNetDoc)result.getModel().get(0)).getNets().get(0),targetFolder, new ArrayList<EObject>());
 		gspn.doGenerate(new BasicMonitor());
+	}
+	
+	private void renameFiles(ClassDesc cd){
+		File folder = new File(path);
+		File files[] = folder.listFiles();
+		
+		for(File f : files){
+			if(f.getName().endsWith(".def") && !f.getName().startsWith(conf.getID())){
+				f.renameTo(new File(path+conf.getID()+"J"+cd.getId()+".def"));
+				continue;
+			}
+			if(f.getName().endsWith(".net") && !f.getName().startsWith(conf.getID())){
+				f.renameTo(new File(path+conf.getID()+"J"+cd.getId()+".net"));
+			}
+		}
 	}
 	
 	public void sendModel(){
@@ -205,10 +220,9 @@ public class DICEWrap {
 	
 	public void generateJson(){
 		conf = Configuration.getCurrent(); //TODO: REMOVE
-		String name = generateName();
 		InstanceDataMultiProvider data = InstanceDataMultiProviderGenerator.build();
 		
-		data.setId(name);
+		data.setId(conf.getID());
 		
 		//Set MapJobProfile
 		Map classdesc = new HashMap<String,Map>();
@@ -289,8 +303,9 @@ public class DICEWrap {
 		}
 		
 		//Set mapJobMLProfile
-		
-		data.setMapJobMLProfiles(null);
+		JobMLProfilesMap jML = JobMLProfilesMapGenerator.build();
+		jML.setMapJobMLProfile(null);
+		data.setMapJobMLProfiles(jML);
 		
 		//Set MapVMConfigurations
 		
@@ -302,7 +317,7 @@ public class DICEWrap {
 		String s="";
 		try {
 			s = mapper.writeValueAsString(data);
-			mapper.writerWithDefaultPrettyPrinter().writeValue(new File(name+".json"), data);
+			mapper.writerWithDefaultPrettyPrinter().writeValue(new File(conf.getID()+".json"), data);
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -313,9 +328,5 @@ public class DICEWrap {
 		
 		System.out.println(s);
 		
-	}
-
-	private String generateName() {
-		return String.valueOf(ThreadLocalRandom.current().nextInt(1000, 5000 + 1));
 	}
 }
