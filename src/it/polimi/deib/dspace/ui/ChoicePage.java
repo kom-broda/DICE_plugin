@@ -1,14 +1,11 @@
 package it.polimi.deib.dspace.ui;
 
-import java.util.logging.Logger;
-
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
@@ -20,7 +17,6 @@ import org.eclipse.swt.widgets.Text;
 import it.polimi.deib.dspace.net.NetworkManager;
 
 public class ChoicePage extends WizardPage{
-	private static final Logger LOGGER = Logger.getLogger(ChoicePage.class.getName() );
 	private Composite container;
 	private GridLayout layout;
 	private Button pri;
@@ -28,12 +24,9 @@ public class ChoicePage extends WizardPage{
 	private int classes = 0;
 	private int alternatives;
 	private Text t1,h1,h2,h3;
-	private List t2;
-	private Label l1;
-	private Label l2;
-	private GridData g1,g2,g3,g4,g5,g6,f1,f2,f3;
+	private List technologiesList;
 	private Button existingLTC,nExistingLTC;
-	private Text rTextField,SpsrTextField;
+	private Text rTextField,SpsrTextField, classesTextField;
 	private Composite ltcCompositeText;
 
 	protected ChoicePage(String title, String description) {
@@ -51,82 +44,44 @@ public class ChoicePage extends WizardPage{
         layout.makeColumnsEqualWidth = true;
         
         
+        this.provideLabel(container, "Number of classes:", SWT.NONE);
+        this.provideLabel(container, "Select technology", SWT.NONE);
+        
+        this.classesTextField = this.provideText(container, true, SWT.BORDER);
         
         
-        
-        //ltcUberComposite.setLayoutData(grid1);
-
-        g1 = new GridData();
-        g1.horizontalAlignment = GridData.HORIZONTAL_ALIGN_BEGINNING;
-        g1.verticalAlignment = GridData.VERTICAL_ALIGN_BEGINNING;
-        l1 = new Label(container, SWT.NONE);
-        //l1.setLayoutData(g1);
-        l1.setText("Number of classes:");
-        
-        g2 = new GridData(SWT.CENTER, SWT.BEGINNING, true, true);
-        l2 = new Label(container, SWT.NONE);
-        //l2.setLayoutData(g2);
-        l2.setText("Select technology:");
-        
-        g3 = new GridData();
-        g3.horizontalAlignment = GridData.HORIZONTAL_ALIGN_BEGINNING;
-        g3.verticalAlignment = GridData.VERTICAL_ALIGN_BEGINNING;
-        t1 = new Text(container, SWT.BORDER);
-        //t1.setLayoutData(g3);
-        t1.setEditable(true);
-        
-        t1.addSelectionListener(new SelectionAdapter() {
+        this.classesTextField.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
             	getWizard().getContainer().updateButtons();
             }
 
         });
         
-        g4 = new GridData(SWT.CENTER, SWT.BEGINNING, true, true);
-        t2 = new List(container, SWT.BORDER);
+        technologiesList = new List(container, SWT.BORDER);
         //t2.setLayoutData(g4);
-        t2.setItems(NetworkManager.getInstance().getTechnologies());
-        t2.addSelectionListener(new SelectionAdapter() {
+        technologiesList.setItems(NetworkManager.getInstance().getTechnologies());
+        technologiesList.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent e) {
             	getWizard().getContainer().updateButtons();
             }
 
         });
         
-        f1 = new GridData();
-        f1.horizontalAlignment = GridData.HORIZONTAL_ALIGN_BEGINNING;
-        f1.verticalAlignment = GridData.VERTICAL_ALIGN_BEGINNING;
         h1 = new Text(container, SWT.PUSH);
         h1.setVisible(false);
         //h1.setLayoutData(f1);
         
-        f2 = new GridData();
-        f2.horizontalAlignment = GridData.HORIZONTAL_ALIGN_BEGINNING;
-        f2.verticalAlignment = GridData.VERTICAL_ALIGN_BEGINNING;
         h2 = new Text(container, SWT.BORDER);
         h2.setVisible(false);
         //h2.setLayoutData(f2);
         
-        g5 = new GridData();
-        g5.horizontalAlignment = GridData.HORIZONTAL_ALIGN_END;
         pri = new Button(container, SWT.RADIO);
         //pri.setLayoutData(g5);
         
-        
-        
-        
-        
-        
-        f3 = new GridData();
-        f3.horizontalAlignment = GridData.HORIZONTAL_ALIGN_BEGINNING;
-        f3.verticalAlignment = GridData.VERTICAL_ALIGN_BEGINNING;
         h3 = new Text(container, SWT.BORDER);
         h3.setVisible(false);
         //h3.setLayoutData(f3);
         
-        
-        g6 = new GridData();
-        g6.horizontalAlignment = GridData.HORIZONTAL_ALIGN_BEGINNING;
         pub = new Button(container, SWT.RADIO);
         //pub.setLayoutData(g6);
         
@@ -236,6 +191,33 @@ public class ChoicePage extends WizardPage{
         setControl(container);
         setPageComplete(false);
 	}
+	/**
+	 * 
+	 * @param container
+	 * @param labelText
+	 * @param style
+	 * @return
+	 */
+	private Label provideLabel(Composite container, String labelText, int style){
+		Label label = new Label(container, style);
+		if(labelText != null){
+			label.setText(labelText);
+		}
+		return label;
+		
+	}
+	/**
+	 * 
+	 * @param container
+	 * @param editable
+	 * @param style
+	 * @return
+	 */
+	private Text provideText(Composite container, Boolean editable, int style){
+		Text text = new Text(container, style);
+		text.setEditable(editable);
+		return text;
+	}
 	
 	public boolean getChoice(){
 		if(this.ltcCompositeText.getVisible()){
@@ -261,12 +243,12 @@ public class ChoicePage extends WizardPage{
 	}
 	
 	public String getTechnology(){
-		return t2.getSelection()[0];
+		return technologiesList.getSelection()[0];
 	}
 	
 	@Override
 	public boolean canFlipToNextPage(){
-		if(this.getChoice() && t2.getSelectionCount() > 0 && (pri.getSelection() || pub.getSelection()) && getClasses() != 0){
+		if(this.getChoice() && technologiesList.getSelectionCount() > 0 && (pri.getSelection() || pub.getSelection()) && getClasses() != 0){
 			return true;
 		}
 		return false;
