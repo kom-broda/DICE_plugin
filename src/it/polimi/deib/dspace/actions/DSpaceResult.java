@@ -15,17 +15,12 @@ import it.polimi.deib.dspace.ui.ResultPage;
 
 
 public class DSpaceResult implements IWorkbenchWindowActionDelegate{
-	private EmbeddedBrowser brows;
-	private IWorkbenchWindow window;
 	private ResultPage p;
 	@Override
 	public void run(IAction arg0) {
 		
-		brows=new EmbeddedBrowser("www.google.com");
-		brows.launch(
-				window.getWorkbench().getDisplay().getActiveShell());
-	//	p.displayUrl("www.google.com");
-		System.out.println("here");
+		p=new ResultPage(new Shell());
+		p.displayUrl("http://specclient1.dei.polimi.it:8018/resPub");
 		
 	
 	}
@@ -44,25 +39,8 @@ public class DSpaceResult implements IWorkbenchWindowActionDelegate{
 
 	@Override
 	public void init(IWorkbenchWindow arg0) {
-		this.window=arg0;
-	//	ResultPage p=new ResultPage("smsafpo");
 		
 	}
-	public static Shell getShell() {
-		IWorkbenchWindow window = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow();
-		if (window == null) {
-			IWorkbenchWindow[] windows = PlatformUI.getWorkbench()
-					.getWorkbenchWindows();
-			if (windows.length > 0) {
-				return windows[0].getShell();
-			}
-		} else {
-			return window.getShell();
-		}
-		return null;
-	}
-	
 	
 
 }
