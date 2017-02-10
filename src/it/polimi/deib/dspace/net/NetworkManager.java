@@ -104,7 +104,7 @@ public class NetworkManager {
 		
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();  
 		builder.addPart("scenario",new StringBody(scenario,ContentType.DEFAULT_TEXT));
-		builder.addPart("initialMarking",new StringBody(scenario,ContentType.DEFAULT_TEXT));
+		//builder.addPart("initialMarking",new StringBody(initialMarking,ContentType.DEFAULT_TEXT));
 		for(File file:files){
 			builder.addPart("file[]", new FileBody(file));
 		}
@@ -145,12 +145,12 @@ public class NetworkManager {
 	}
 	
 	public String[] getAlternatives(){
-		String s[] = {"a","b","c","d"};
+		String s[] = {"a-b","b-c","c-d","d-e"};
 		return s;
 	}
 	
 	public String[] getTechnologies(){
-		String s[] = {"Storm", "MapReduce", "Aaaaa"};
+		String s[] = {"Storm", "MapReduce", "Hadoop"};
 		return s;
 	}
 	

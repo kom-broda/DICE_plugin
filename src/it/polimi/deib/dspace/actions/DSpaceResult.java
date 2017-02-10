@@ -44,7 +44,7 @@ public class DSpaceResult implements IWorkbenchWindowActionDelegate{
 	@Override
 	public void init(IWorkbenchWindow arg0) {
 		this.window=arg0;
-		ResultPage p=new ResultPage("smsafpo");
+	//	ResultPage p=new ResultPage("smsafpo");
 		
 	}
 	public static Shell getShell() {

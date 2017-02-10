@@ -25,6 +25,8 @@ public class ChoicePage extends WizardPage{
 	private GridLayout layout;
 	private Button pri;
 	private Button pub;
+
+	private boolean choice ; // f - public, t - private
 	private int classes = 0;
 	private int alternatives;
 	private Text t1,h1,h2,h3;
@@ -55,7 +57,8 @@ public class ChoicePage extends WizardPage{
         
         
         //ltcUberComposite.setLayoutData(grid1);
-
+        
+        Composite ltcUberComposite = new Composite(container, SWT.NONE);
         g1 = new GridData();
         g1.horizontalAlignment = GridData.HORIZONTAL_ALIGN_BEGINNING;
         g1.verticalAlignment = GridData.VERTICAL_ALIGN_BEGINNING;
@@ -136,23 +139,6 @@ public class ChoicePage extends WizardPage{
         pri.setText("Private");
         pub.setText("Public");
         
-        Composite ltcUberComposite = new Composite(container, SWT.NONE);
-        RowLayout layoutRow_uber = new RowLayout();
-        layoutRow_uber.fill = true;
-        ltcUberComposite.setLayout(layoutRow_uber);
-        //Composite for ltc radio btns
-        final Composite ltcComposite = new Composite(ltcUberComposite, SWT.NONE);
-        RowLayout layoutRow = new RowLayout();
-        layoutRow.type = SWT.VERTICAL;
-        ltcComposite.setLayout(layoutRow);
-        ltcComposite.setVisible(false);
-        
-        //Composite for ltc text inputs
-        ltcCompositeText = new Composite(ltcUberComposite, SWT.NONE);
-        RowLayout layoutRow_1 = new RowLayout();
-        layoutRow_1.type = SWT.VERTICAL;
-        ltcCompositeText.setLayout(layoutRow_1);
-        ltcCompositeText.setVisible(false);
         
         Composite rTextComposite = new Composite(ltcCompositeText, SWT.NONE);
         RowLayout layoutRow_4 = new RowLayout();
@@ -170,6 +156,7 @@ public class ChoicePage extends WizardPage{
         layoutRow_3.type = SWT.HORIZONTAL;
         layoutRow_3.pack = false;
         tTextComposite.setLayout(layoutRow_3);
+        final Composite ltcComposite = new Composite(ltcUberComposite, SWT.NONE);
         Label tTextLabel = new Label(tTextComposite, SWT.NONE);
         tTextLabel.setText("Spsr");
         this.SpsrTextField = new Text(tTextComposite,SWT.BORDER);
