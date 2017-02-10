@@ -1,17 +1,12 @@
 package it.polimi.deib.dspace.ui;
 
-import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Dialog;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 public class ResultPage extends Dialog{
 
 	
 	private EmbeddedBrowser browser;
-	private Composite container;
 	private Shell shell;
 
 
