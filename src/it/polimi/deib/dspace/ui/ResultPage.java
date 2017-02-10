@@ -1,34 +1,27 @@
 package it.polimi.deib.dspace.ui;
 
-import org.eclipse.jface.wizard.WizardPage;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Dialog;
+import org.eclipse.swt.widgets.Shell;
 
-public class ResultPage extends WizardPage{
+import it.polimi.deib.dspace.control.EmbeddedBrowser;
+
+public class ResultPage extends Dialog{
 
 	
 	private EmbeddedBrowser browser;
-	private Composite container;
+	private Shell shell;
 
 
-	protected ResultPage(String name) {
+	public ResultPage(Shell name) {
 		super(name);
-		this.setTitle(name);
+		shell=name;
 	
 	}
-	
-	@Override
-	public void createControl(Composite arg0) {
-		container=new Composite(arg0, SWT.NONE);
-		setPageComplete(true);
-		getWizard().getContainer().updateButtons();
-		setControl(container);
-	}
-	
 	public void displayUrl(String URL){
 		browser=new EmbeddedBrowser(URL);
-		browser.launch(container);
-		getShell().setSize(800, 800);
+		browser.launch(shell);
+		shell.setSize(800, 800);
+		shell.open();
 		
 	}
 	
