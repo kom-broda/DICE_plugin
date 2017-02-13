@@ -12,6 +12,7 @@ public class Configuration {
 	private String technology;
 	private boolean hasLTC; //Long Term Contract already existing
 	private String ID;
+	private String serverID;
 	
 	public Configuration(){
 		classes = new Vector<ClassDesc>();
@@ -85,5 +86,11 @@ public class Configuration {
 	}
 	public boolean getHasLtc(){
 		return hasLTC;
+	}
+	public void setServerID(String serverId){
+		this.serverID=serverId;
+	}
+	public String getServerID(){
+		return this.serverID;
 	}
 }
