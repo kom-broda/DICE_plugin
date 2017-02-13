@@ -2,10 +2,7 @@ package it.polimi.deib.dspace.actions;
 
 
 import it.polimi.deib.dspace.control.DICEWrap;
-import it.polimi.deib.dspace.control.FileManager;
 import it.polimi.deib.dspace.ui.DSpaceWizard;
-
-import java.io.File;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
@@ -40,9 +37,9 @@ public class DSpaceAction implements IWorkbenchWindowActionDelegate {
 		if(action.getId().endsWith("Start")){
 			WizardDialog dialog = new WizardDialog(null, new DSpaceWizard());
 			dialog.open();
-//			System.out.println("Starting");
+			System.out.println("Starting");
 //			DICEWrap.getWrapper().buildHadoopAnalyzableModel("/home/kom/Downloads/wikistats4opt/model_1_class.uml");
-//			DICEWrap.getWrapper().start();
+			DICEWrap.getWrapper().start();
 //			DICEWrap.getWrapper().generateJson();
 //			DICEWrap.getWrapper().sendModel();
 		}else{
