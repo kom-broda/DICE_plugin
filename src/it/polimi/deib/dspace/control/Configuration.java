@@ -13,6 +13,8 @@ public class Configuration {
 	private boolean hasLTC; //Long Term Contract already existing
 	private String ID;
 	private String serverID;
+	private int r = -1;
+	private float spsr = -1;
 	
 	public Configuration(){
 		classes = new Vector<ClassDesc>();
@@ -51,15 +53,16 @@ public class Configuration {
 	}
 	
 	public void dump(){
+		System.out.println("Technology:\t"+technology);
+		System.out.println(isPrivate ? "Private" : !hasLTC ? "No LTC" : "r: " + r + "\t" + "spsr: " + spsr);
 		for (ClassDesc c : classes){
 			System.out.println("Class: "+c.getId());
 			System.out.println(" "+c.getDtsmPath());
-			System.out.println(" "+c.getDdsmPath());
-			for (String alt : c.getAlternatives()){
-				System.out.println(" "+alt);
+			for(String alt : c.getAltDdsm().keySet()){
+				System.out.println("\t"+alt+"\t"+c.getAltDdsm().get(alt));
 			}
 		}
-	}
+	} //TODO replace with dump on JSON
 	
 	public void setTechnology(String tech){
 		technology = tech;
@@ -92,5 +95,21 @@ public class Configuration {
 	}
 	public String getServerID(){
 		return this.serverID;
+	}
+	public int getR() {
+		return r;
+	}
+
+	public void setR(int r) {
+		this.r = r;
+	}
+
+	public float getSpsr() {
+		return spsr;
+	}
+
+	public void setSpsr(float spsr) {
+		this.spsr = spsr;
+
 	}
 }
