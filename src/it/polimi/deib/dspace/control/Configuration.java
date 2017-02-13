@@ -12,6 +12,7 @@ public class Configuration {
 	private String technology;
 	private boolean hasLTC; //Long Term Contract already existing
 	private String ID;
+	private String serverID;
 	private int r = -1;
 	private float spsr = -1;
 	
@@ -89,7 +90,12 @@ public class Configuration {
 	public boolean getHasLtc(){
 		return hasLTC;
 	}
-
+	public void setServerID(String serverId){
+		this.serverID=serverId;
+	}
+	public String getServerID(){
+		return this.serverID;
+	}
 	public int getR() {
 		return r;
 	}
@@ -104,5 +110,6 @@ public class Configuration {
 
 	public void setSpsr(float spsr) {
 		this.spsr = spsr;
+
 	}
 }
