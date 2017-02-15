@@ -99,9 +99,9 @@ public class DICEWrap {
 		switch(conf.getTechnology()){
 			case "Storm":
 				for (ClassDesc c : conf.getClasses()){
-					for(String alt : c.getAltDdsm().keySet()){
+					for(String alt : c.getAltDtsm().keySet()){
 						try {
-							buildStormAnalyzableModel(c.getAltDdsm().get(alt));
+							buildStormAnalyzableModel(c.getAltDtsm().get(alt));
 							genGSPN(); 
 							FileManager.getInstance().editFiles(c.getId(),alt,extractId());
 						} catch (IOException e) {
@@ -113,7 +113,7 @@ public class DICEWrap {
 			case "Hadoop":
 				for (ClassDesc c : conf.getClasses()){
 					try {
-						buildHadoopAnalyzableModel(c.getDtsmPath());
+						buildHadoopAnalyzableModel(c.getDdsmPath());
 						extractHadoopInitialMarking();
 						genGSPN();
 					} catch (Exception e) {
@@ -126,7 +126,8 @@ public class DICEWrap {
 				System.err.println("Unknown technology: "+conf.getTechnology());
 		}
 		
-		FileManager.getInstance().generateJson();
+		FileManager.getInstance().generateInputJson();
+		FileManager.getInstance().generateOutputJson();
 		try {
 			NetworkManager.getInstance().sendModel(FileManager.getInstance().selectFiles(), scenario);
 		} catch (UnsupportedEncodingException e) {
