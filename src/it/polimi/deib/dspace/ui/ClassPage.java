@@ -32,17 +32,17 @@ public class ClassPage extends WizardPage{
 	private GridLayout layout;
 	private List l1;
 	private List l2;
-	private String dtsmPath = "";
+	private String ddsmPath = "";
 	private Label fileName;
 	private int classCount = 0;
 	private int numClasses;
-	private HashMap<String, String> altDdsm;
+	private HashMap<String, String> altDtsm;
 
 	protected ClassPage(String title, String description) {
 		super("Browse Files");
 		setTitle(title);
 		setDescription(description);
-		altDdsm = new HashMap<String, String>();
+		altDtsm = new HashMap<String, String>();
 	}
 
 	@Override
@@ -90,7 +90,7 @@ public class ClassPage extends WizardPage{
 					
 	        	  int choice = chooser.showOpenDialog(null);
 	        	  if (choice != JFileChooser.APPROVE_OPTION) return;
-	        	  altDdsm.put(l1.getSelection()[0], chooser.getSelectedFile().getPath());
+	        	  altDtsm.put(l1.getSelection()[0], chooser.getSelectedFile().getPath());
 	        	  
 	        	  l1.remove(l1.getSelectionIndices()[0]);
 	        	  
@@ -107,7 +107,7 @@ public class ClassPage extends WizardPage{
 	        		  return;
 	        	  }
 	        	  l1.add(l2.getSelection()[0]);
-	        	  altDdsm.remove(l2.getSelection()[0]);
+	        	  altDtsm.remove(l2.getSelection()[0]);
 	        	  l2.remove(l2.getSelectionIndices()[0]);
 	        	  container.layout();
 	          }
@@ -120,7 +120,7 @@ public class ClassPage extends WizardPage{
 		
 		Button browse = new Button(container, SWT.PUSH);
 		browse.setLayoutData(new GridData(SWT.BEGINNING, SWT.END, false, false));
-		browse.setText("Load DTSM for this class...");
+		browse.setText("Load DDSM for this class...");
 		
 		
 		fl1 = new Label(container, SWT.NONE);
@@ -134,9 +134,6 @@ public class ClassPage extends WizardPage{
 		fl1 = new Label(container, SWT.NONE);
 		fl1 = new Label(container, SWT.NONE);
 		
-		Button browse1 = new Button(container, SWT.PUSH);
-		browse1.setLayoutData(new GridData(SWT.BEGINNING, SWT.END, false, false));
-		browse1.setText("Load DDSM for this class...");	
 		Button button = new Button(container, SWT.PUSH);
 		button.setText("Refresh alternatives");
 		button.addSelectionListener(new SelectionAdapter(){
@@ -156,7 +153,7 @@ public class ClassPage extends WizardPage{
 
             	if (choice != JFileChooser.APPROVE_OPTION) return;
             	
-            	dtsmPath = chooser.getSelectedFile().getPath();
+            	ddsmPath = chooser.getSelectedFile().getPath();
             	
             	fileName.setText(chooser.getSelectedFile().getName());
             	//setPageComplete(true);
@@ -174,7 +171,7 @@ public class ClassPage extends WizardPage{
 	
 	@Override
 	public boolean canFlipToNextPage(){
-		if(!dtsmPath.equals("") && l2.getItemCount() > 0){
+		if(!ddsmPath.equals("") && l2.getItemCount() > 0){
 			System.out.println("Can turn");
 			return true;
 		}
@@ -188,13 +185,14 @@ public class ClassPage extends WizardPage{
 		l1.setItems(JsonDatabase.getInstance().refreshDbContents());
 	}
 	
-	public String getDTSMPath(){
-		return dtsmPath;
+	public String getDDSMPath(){
+		return ddsmPath;
 	}
 
-	public HashMap<String, String> getAltDdsm(){
-		return altDdsm;
+	public HashMap<String, String> getAltDtsm(){
+		return altDtsm;
 	}
+	
 	private String[] fetchAlternatives(){
 		String db;
 		JSONParser parser;
@@ -227,15 +225,16 @@ public class ClassPage extends WizardPage{
 		}
 		return null;
 	}
+	
 	public void reset(){
 		l2.removeAll();
 		populateAlternatives();
 		fileName.setText("");
-		dtsmPath = "";
+		ddsmPath = "";
 		getWizard().getContainer().updateButtons();
 		container.layout();
 		classCount++;
-		altDdsm = new HashMap<String, String>();
+		altDtsm = new HashMap<String, String>();
 	}
 	
 	public String[] getSelectedAlternatives() {
