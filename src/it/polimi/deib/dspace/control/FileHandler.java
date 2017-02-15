@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONObject;
@@ -15,7 +17,7 @@ import org.json.simple.parser.ParseException;
 import it.polimi.deib.dspace.net.NetworkManager;
 
 public class FileHandler {
-	private File[] files;
+	private List<File> files;
 	private File folder;
 	private String scenario;
 
@@ -23,7 +25,10 @@ public class FileHandler {
 		folder=new File(path);
 	}
 	private void getFilesFromFolder(){
-		files=folder.listFiles();
+		this.files=new ArrayList<File>();
+		for(File f:folder.listFiles()){
+			files.add(f);
+		}
 	}
 	public void setScenario(String scenario){
 		this.scenario=scenario;
@@ -31,12 +36,12 @@ public class FileHandler {
 	
 	public void sendFile(){
 		this.getFilesFromFolder();
-//		try {
-//			NetworkManager.getInstance().sendModel(files, scenario);
-//		} catch (UnsupportedEncodingException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		try {
+			NetworkManager.getInstance().sendModel(files, scenario);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public void setScenario(boolean isPrivate,boolean isELTC){
 		if(!isPrivate){
