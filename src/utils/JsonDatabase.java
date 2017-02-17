@@ -34,22 +34,11 @@ public class JsonDatabase {
 		}
 	}
 	public String[] refreshDbContents() {
-		String pre = "{\n\t\"alternatives\":[";
-		String post = "]\n}";
-		String[] alternatives = digestAlternatives(NetworkManager.getInstance().fetchAlternatives());
+		JSONArray array = NetworkManager.getInstance().fetchAlternatives();
+		String[] alternatives = digestAlternatives(array);
 		try {
 			FileWriter writer = new FileWriter("db.json");
-			for(int i = 0; i<alternatives.length; i++){
-				if(i != 0){	
-					pre = pre + ",\""+alternatives[i]+"\"";
-				}
-				else{
-					pre = pre + "\""+alternatives[i]+"\"";
-				}
-			}
-			System.out.println(pre+post);
-			writer.write(pre+post);
-			writer.close();
+			writer.write(array.toJSONString());
 			return alternatives;
 			
 		} catch (IOException e) {
@@ -62,7 +51,7 @@ public class JsonDatabase {
 	private String[] digestAlternatives(JSONArray json){
 		String[] returnObject = new String[json.size()];
 		Iterator<?> it = json.iterator();
-		JSONObject object = new JSONObject();
+		JSONObject object;
 		int i = 0;
 		while(it.hasNext()){
 			object = (JSONObject) it.next();
@@ -74,7 +63,7 @@ public class JsonDatabase {
 	public String[] getAlternatives(){
 		JSONParser parser = new JSONParser();
 		try {
-			JSONObject parsed = (JSONObject) parser.parse(new FileReader("db.json"));
+			JSONArray parsed = (JSONArray) parser.parse(new FileReader("db.json"));
 			return digestAlternatives(parsed);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
