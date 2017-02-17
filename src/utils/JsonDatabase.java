@@ -36,8 +36,7 @@ public class JsonDatabase {
 	public String[] refreshDbContents() {
 		String pre = "{\n\t\"alternatives\":[";
 		String post = "]\n}";
-		//String[] alternatives = digestAlternatives(NetworkManager.getInstance().fetchAlternatives());
-		String[] alternatives = {"a","b","c"};
+		String[] alternatives = digestAlternatives(NetworkManager.getInstance().fetchAlternatives());
 		try {
 			FileWriter writer = new FileWriter("db.json");
 			for(int i = 0; i<alternatives.length; i++){
@@ -60,13 +59,14 @@ public class JsonDatabase {
 		return null;
 		
 	}
-	private String[] digestAlternatives(JSONObject json){
-		JSONArray array = (JSONArray) json.get("alternatives");
-		String[] returnObject = new String[array.size()];
-		Iterator<?> it = array.iterator();
+	private String[] digestAlternatives(JSONArray json){
+		String[] returnObject = new String[json.size()];
+		Iterator<?> it = json.iterator();
+		JSONObject object = new JSONObject();
 		int i = 0;
 		while(it.hasNext()){
-			returnObject[i] = it.next().toString();
+			object = (JSONObject) it.next();
+			returnObject[i] = object.get("name").toString();
 			i++;
 		}
 		return returnObject;
