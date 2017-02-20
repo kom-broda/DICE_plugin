@@ -127,7 +127,7 @@ public class ClassPage extends WizardPage{
 		fl1 = new Label(container, SWT.NONE);
 		label_error = new Label(container, SWT.NONE);
 		label_error.setText("Error: Unable to get vm configurations");
-		label_error.setVisibility(false);
+		label_error.setVisible(false);
 		Button button = new Button(container, SWT.PUSH);
 		button.setText("Refresh alternatives");
 		button.addSelectionListener(new SelectionAdapter(){
@@ -175,7 +175,7 @@ public class ClassPage extends WizardPage{
 	private void populateAlternatives(){
 		String[] vmConfigs = JsonDatabase.getInstance().getVmConfigs();
 		if(vmConfigs == null){
-			label_error.setVisibility(true);
+			label_error.setVisible(true);
 		}
 		else{
 			l1.setItems(JsonDatabase.getInstance().getVmConfigs());
