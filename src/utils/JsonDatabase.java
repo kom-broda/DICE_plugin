@@ -14,6 +14,7 @@ import java.util.Iterator;
 
 /**
  * Contains methods for dealing with the different vm configurations local database
+ * @author Giorgio Pea <giorgio.pea@mail.polimi.it>
  */
 public class JsonDatabase {
 	private static JsonDatabase instance;
@@ -45,18 +46,20 @@ public class JsonDatabase {
 	 * @return The different vm configurations available
 	 */
 	public String[] refreshDbContents() {
-		JSONArray array = NetworkManager.getInstance().fetchAlternatives();
-		String[] alternatives = digestAlternatives(array);
-		try {
-			//Writes the db
-			FileWriter writer = new FileWriter("vmconfigs.json");
-			writer.write(array.toJSONString());
-			writer.close();
-			return alternatives;
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		JSONArray array = NetworkManager.getInstance().fetchVmConfigs();
+		if(array != null) {
+			String[] alternatives = digestAlternatives(array);
+			try {
+				//Writes the db
+				FileWriter writer = new FileWriter("vmconfigs.json");
+				writer.write(array.toJSONString());
+				writer.close();
+				return alternatives;
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return null;
 		
@@ -87,7 +90,7 @@ public class JsonDatabase {
 	 * Fetches the different vm configurations from the database
 	 * @return the different vm configurations available
 	 */
-	public String[] getAlternatives(){
+	public String[] getVmConfigs(){
 		JSONParser parser = new JSONParser();
 		try {
 			JSONArray parsed = (JSONArray) parser.parse(new FileReader("vmconfigs.json"));

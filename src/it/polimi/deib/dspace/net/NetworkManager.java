@@ -1,8 +1,6 @@
 package it.polimi.deib.dspace.net;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -11,9 +9,7 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.client.LaxRedirectStrategy;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -51,7 +47,7 @@ public class NetworkManager {
 	 * Fetches vm configurations from the web
 	 * @return A json object representing the fetched vm configurations
 	 */
-	public JSONArray fetchAlternatives(){
+	public JSONArray fetchVmConfigs(){
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpGet httpget = new HttpGet(vmConfigsEndpoint);
 		CloseableHttpResponse response;
@@ -83,8 +79,8 @@ public class NetworkManager {
 	 * @throws UnsupportedEncodingException 
 	 */
 	public void sendModel(List<File> files, String scenario) throws UnsupportedEncodingException{
-		HttpClient httpclient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
-		HttpResponse response;
+		CloseableHttpClient httpclient = HttpClients.createDefault();
+		CloseableHttpResponse response;
 		HttpPost post = new HttpPost(modelUploadEndpoint);
 		
 		MultipartEntityBuilder builder = MultipartEntityBuilder.create();  
@@ -97,6 +93,9 @@ public class NetworkManager {
 	    	response = httpclient.execute(post);
 			if(response.getStatusLine().getStatusCode() != 302){
 				System.err.println("Error: POST not succesfull");
+			}
+			else{
+				response.close();
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

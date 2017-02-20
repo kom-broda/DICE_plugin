@@ -1,12 +1,9 @@
 package it.polimi.deib.dspace.ui;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Iterator;
 import java.util.HashMap;
 
 import javax.swing.JFileChooser;
-import org.apache.commons.io.IOUtils;
+
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.wizard.WizardPage;
@@ -19,12 +16,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
-import it.polimi.deib.dspace.Activator;
 import utils.JsonDatabase;
 
 public class ClassPage extends WizardPage{
@@ -33,7 +25,7 @@ public class ClassPage extends WizardPage{
 	private List l1;
 	private List l2;
 	private String ddsmPath = "";
-	private Label fileName;
+	private Label fileName, label_error;
 	private int classCount = 0;
 	private int numClasses;
 	private HashMap<String, String> altDtsm;
@@ -133,7 +125,9 @@ public class ClassPage extends WizardPage{
 		fl1 = new Label(container, SWT.NONE);
 		fl1 = new Label(container, SWT.NONE);
 		fl1 = new Label(container, SWT.NONE);
-		
+		label_error = new Label(container, SWT.NONE);
+		label_error.setText("Error: Unable to get vm configurations");
+		label_error.setVisibility(false);
 		Button button = new Button(container, SWT.PUSH);
 		button.setText("Refresh alternatives");
 		button.addSelectionListener(new SelectionAdapter(){
@@ -179,7 +173,14 @@ public class ClassPage extends WizardPage{
 	}
 	
 	private void populateAlternatives(){
-		l1.setItems(JsonDatabase.getInstance().getAlternatives());
+		String[] vmConfigs = JsonDatabase.getInstance().getVmConfigs();
+		if(vmConfigs == null){
+			label_error.setVisibility(true);
+		}
+		else{
+			l1.setItems(JsonDatabase.getInstance().getVmConfigs());
+		}
+
 	}
 	private void refreshAlternatives(){
 		l1.setItems(JsonDatabase.getInstance().refreshDbContents());
@@ -192,40 +193,7 @@ public class ClassPage extends WizardPage{
 	public HashMap<String, String> getAltDtsm(){
 		return altDtsm;
 	}
-	
-	private String[] fetchAlternatives(){
-		String db;
-		JSONParser parser;
-		JSONObject parsedJson;
-		JSONArray jsonArray;
-		Iterator<Object> it;
-		int i = 0;
-		String[] targetStrings;
-		try {
-			db = IOUtils.toString(FileLocator.openStream(Activator.getDefault().getBundle(), new Path("db/alternatives.json"), false),"UTF-8");
-			parser = new JSONParser();
-			parsedJson = (JSONObject) parser.parse(db);
-			jsonArray = (JSONArray) parsedJson.get("alternatives");
-			it = jsonArray.listIterator();
-			targetStrings = new String[jsonArray.size()];
-			while(it.hasNext()){
-				targetStrings[i] = it.next().toString();
-				i++;
-			}
-			return targetStrings;
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
+
 	public void reset(){
 		l2.removeAll();
 		populateAlternatives();
