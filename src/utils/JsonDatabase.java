@@ -34,22 +34,11 @@ public class JsonDatabase {
 		}
 	}
 	public String[] refreshDbContents() {
-		String pre = "{\n\t\"alternatives\":[";
-		String post = "]\n}";
-		//String[] alternatives = digestAlternatives(NetworkManager.getInstance().fetchAlternatives());
-		String[] alternatives = {"Cineca-5xlarge","Amazon-xlarge","Amazon-large"};
+		JSONArray array = NetworkManager.getInstance().fetchAlternatives();
+		String[] alternatives = digestAlternatives(array);
 		try {
 			FileWriter writer = new FileWriter("db.json");
-			for(int i = 0; i<alternatives.length; i++){
-				if(i != 0){	
-					pre = pre + ",\""+alternatives[i]+"\"";
-				}
-				else{
-					pre = pre + "\""+alternatives[i]+"\"";
-				}
-			}
-			System.out.println(pre+post);
-			writer.write(pre+post);
+			writer.write(array.toJSONString());
 			writer.close();
 			return alternatives;
 			
@@ -60,13 +49,17 @@ public class JsonDatabase {
 		return null;
 		
 	}
-	private String[] digestAlternatives(JSONObject json){
-		JSONArray array = (JSONArray) json.get("alternatives");
-		String[] returnObject = new String[array.size()];
-		Iterator<?> it = array.iterator();
+	private String[] digestAlternatives(JSONArray json){
+		String[] returnObject = new String[json.size()];
+		Iterator<?> it = json.iterator();
+		JSONObject object = new JSONObject();
+		String name,type;
 		int i = 0;
 		while(it.hasNext()){
-			returnObject[i] = it.next().toString();
+			object = (JSONObject) it.next();
+			name = ((JSONObject) object.get("provider")).get("name").toString();
+			type = object.get("type").toString();
+			returnObject[i] = name+"-"+type;
 			i++;
 		}
 		return returnObject;
@@ -74,7 +67,7 @@ public class JsonDatabase {
 	public String[] getAlternatives(){
 		JSONParser parser = new JSONParser();
 		try {
-			JSONObject parsed = (JSONObject) parser.parse(new FileReader("db.json"));
+			JSONArray parsed = (JSONArray) parser.parse(new FileReader("db.json"));
 			return digestAlternatives(parsed);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
