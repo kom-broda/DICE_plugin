@@ -4,8 +4,6 @@ import java.util.HashMap;
 
 import javax.swing.JFileChooser;
 
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -26,8 +24,6 @@ public class ClassPage extends WizardPage{
 	private List l2;
 	private String ddsmPath = "";
 	private Label fileName, label_error;
-	private int classCount = 0;
-	private int numClasses;
 	private HashMap<String, String> altDtsm;
 
 	protected ClassPage(String title, String description) {
@@ -48,9 +44,9 @@ public class ClassPage extends WizardPage{
 		l.setText("Choose alternatives");
 		l.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, false, false));
 		
-		Label fl1 = new Label(container, SWT.NONE);
-		fl1 = new Label(container, SWT.NONE);
-		fl1 = new Label(container, SWT.NONE);
+		new Label(container, SWT.NONE);
+		new Label(container, SWT.NONE);
+		new Label(container, SWT.NONE);
 		
 		l1 = new List(container, SWT.BORDER);
 		l1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -105,26 +101,26 @@ public class ClassPage extends WizardPage{
 	          }
 	      });
 		
-		fl1 = new Label(container, SWT.NONE);
-		fl1 = new Label(container, SWT.NONE);
-		fl1 = new Label(container, SWT.NONE);
-		fl1 = new Label(container, SWT.NONE);
+		new Label(container, SWT.NONE);
+		new Label(container, SWT.NONE);
+		new Label(container, SWT.NONE);
+		new Label(container, SWT.NONE);
 		
 		Button browse = new Button(container, SWT.PUSH);
 		browse.setLayoutData(new GridData(SWT.BEGINNING, SWT.END, false, false));
 		browse.setText("Load DDSM for this class...");
 		
 		
-		fl1 = new Label(container, SWT.NONE);
-		fl1 = new Label(container, SWT.NONE);
-		fl1 = new Label(container, SWT.NONE);
+		new Label(container, SWT.NONE);
+		new Label(container, SWT.NONE);
+		new Label(container, SWT.NONE);
 		
 		fileName = new Label(container, SWT.NONE);
 		fileName.setLayoutData(new GridData(SWT.BEGINNING, SWT.END, false, false));
 		
-		fl1 = new Label(container, SWT.NONE);
-		fl1 = new Label(container, SWT.NONE);
-		fl1 = new Label(container, SWT.NONE);
+		new Label(container, SWT.NONE);
+		new Label(container, SWT.NONE);
+		new Label(container, SWT.NONE);
 		label_error = new Label(container, SWT.NONE);
 		label_error.setText("Error: Unable to get vm configurations");
 		label_error.setVisible(false);
@@ -201,7 +197,6 @@ public class ClassPage extends WizardPage{
 		ddsmPath = "";
 		getWizard().getContainer().updateButtons();
 		container.layout();
-		classCount++;
 		altDtsm = new HashMap<String, String>();
 	}
 	
@@ -210,6 +205,5 @@ public class ClassPage extends WizardPage{
 	}
 
 	public void setNumClasses(int numClasses){
-		this.numClasses = numClasses;
 	}
 }

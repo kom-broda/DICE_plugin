@@ -11,15 +11,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
-
-import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONObject;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ser.impl.FilteredBeanPropertyWriter;
-
 import it.polimi.diceH2020.SPACE4Cloud.shared.generators.ClassParametersGenerator;
 import it.polimi.diceH2020.SPACE4Cloud.shared.generatorsDataMultiProvider.InstanceDataMultiProviderGenerator;
 import it.polimi.diceH2020.SPACE4Cloud.shared.generatorsDataMultiProvider.JobMLProfileGenerator;
@@ -92,6 +87,7 @@ public class FileManager {
 				s = s + "\n" + newLine;
 				newLine = in.readLine();
 			}
+			in.close();
 			
 			lines = s.split("\n");
 			for (i=0; i< lines.length; i++){

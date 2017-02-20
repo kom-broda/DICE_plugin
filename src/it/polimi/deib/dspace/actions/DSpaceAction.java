@@ -2,7 +2,6 @@ package it.polimi.deib.dspace.actions;
 
 
 import it.polimi.deib.dspace.control.DICEWrap;
-import it.polimi.deib.dspace.control.FileManager;
 import it.polimi.deib.dspace.ui.ConfigurationDialog;
 import it.polimi.deib.dspace.ui.DSpaceWizard;
 
@@ -29,7 +28,6 @@ import it.polimi.deib.dspace.control.Configuration;
  * @see IWorkbenchWindowActionDelegate
  */
 public class DSpaceAction implements IWorkbenchWindowActionDelegate {
-	private IWorkbenchWindow window;
 	/**
 	 * The constructor.
 	 */
@@ -92,7 +90,6 @@ public class DSpaceAction implements IWorkbenchWindowActionDelegate {
 	 * @see IWorkbenchWindowActionDelegate#init
 	 */
 	public void init(IWorkbenchWindow window) {
-		this.window = window;
 	}
 	private void loadConfiguration(){
 		String filePath="configFile/ConfigFile.txt";

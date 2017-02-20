@@ -1,21 +1,12 @@
 package it.polimi.deib.dspace.control;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
-import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 
-import org.eclipse.core.internal.jobs.ObjectMap;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.BasicMonitor;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -25,18 +16,12 @@ import org.eclipse.uml2.uml.Device;
 import org.eclipse.uml2.uml.FinalNode;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.Transition;
-import org.json.simple.JSONObject;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import es.unizar.disco.pnml.m2m.builder.HadoopActivityDiagram2PnmlResourceBuilder;
 import es.unizar.disco.pnml.m2m.builder.StormActivityDiagram2PnmlResourceBuilder;
 import es.unizar.disco.pnml.m2t.templates.gspn.GenerateGspn;
 import es.unizar.disco.simulation.models.builders.IAnalyzableModelBuilder.ModelResult;
 import es.unizar.disco.simulation.models.datatypes.PrimitiveVariableAssignment;
 import es.unizar.disco.simulation.models.traces.Trace;
-import fr.lip6.move.pnml.ptnet.PetriNet;
 import fr.lip6.move.pnml.ptnet.PetriNetDoc;
 import fr.lip6.move.pnml.ptnet.Place;
 import it.polimi.deib.dspace.net.NetworkManager;
@@ -45,11 +30,7 @@ public class DICEWrap {
 	private static DICEWrap diceWrap;
 	private ModelResult result;
 	private Configuration conf;
-//	private String fileNames[] = {"1_h8_D500000.0MapJ1Cineca5xlarge.txt","1_h8_D500000.0RSJ1Cineca5xlarge.txt",
-//	"1_h8_D500000.0.json"}; //to be replaced with conf content once web serice is ready to process it
-	private String fileNames[] = {"aaa0MapJ1Cineca5xlarge.txt","aaa0RSJ1Cineca5xlarge.txt",
-	"aaa0.json"}; //to be replaced with conf content once web service is ready to process it
-	private String scenario;
+private String scenario;
 	private String initialMarking;
 	
 	public DICEWrap(){
