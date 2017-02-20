@@ -26,10 +26,11 @@ import java.util.List;
 public class NetworkManager {
 	
 	private static NetworkManager instance;
-	private static String rootEndpoint = "http://9a3c748a.ngrok.io";
-	private static String vmConfigsEndpoint = rootEndpoint+"/vm-types";
-	private static String modelUploadEndpoint = rootEndpoint+"/files/upload";
-	
+	private static String rootEndpoint = "http://localhost:8000";
+	private static String alternativesEndpoint = rootEndpoint+"/vm-types";
+	private static String modelUploadEndpoint = rootEndpoint+"/files/view/upload";
+	private static String simulationSetupEndpoint = rootEndpoint+"/launch/simulationSetup";
+
 	public static NetworkManager getInstance(){
 		if(instance != null){
 			return instance;
