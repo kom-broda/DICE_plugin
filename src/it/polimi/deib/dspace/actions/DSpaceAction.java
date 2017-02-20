@@ -47,11 +47,18 @@ public class DSpaceAction implements IWorkbenchWindowActionDelegate {
 		if(action.getId().endsWith("Start")){
 			WizardDialog dialog = new WizardDialog(null, new DSpaceWizard());
 			dialog.open();
-//			System.out.println("Starting");
-//			DICEWrap.getWrapper().buildHadoopAnalyzableModel("/home/kom/Downloads/wikistats4opt/model_1_class.uml");
-//			DICEWrap.getWrapper().start();
-//			DICEWrap.getWrapper().generateInputJson();
+			System.out.println("Starting");
+//			DICEWrap.getWrapper().buildHadoopAnalyzableModel("/home/kom/Wikistats-Models/dtsm-hadoopmr/model_1_class.uml");
+//			DICEWrap.getWrapper().extractHadoopInitialMarking();
+//			try {
+//				DICEWrap.getWrapper().genGSPN();
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+			DICEWrap.getWrapper().start();
 //			DICEWrap.getWrapper().sendModel();
+//			FileManager.getInstance().generateInputJson();
 		}else{
 			System.out.println("Set up options");
 			ConfigurationDialog con=new ConfigurationDialog(new Shell());

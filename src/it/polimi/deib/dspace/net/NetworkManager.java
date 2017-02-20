@@ -31,9 +31,9 @@ import java.util.List;
 public class NetworkManager {
 	
 	private static NetworkManager instance;
-	private static String rootEndpoint = "http://specclient1.dei.polimi.it:8018";
+	private static String rootEndpoint = "http://localhost:8000";
 	private static String alternativesEndpoint = rootEndpoint+"/alternatives";
-	private static String modelUploadEndpoint = rootEndpoint+"/files/upload";
+	private static String modelUploadEndpoint = rootEndpoint+"/files/view/upload";
 	private static String simulationSetupEndpoint = rootEndpoint+"/launch/simulationSetup";
 	
 	public static NetworkManager getInstance(){
