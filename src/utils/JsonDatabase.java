@@ -1,19 +1,21 @@
 package utils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Iterator;
-
+import it.polimi.deib.dspace.net.NetworkManager;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import it.polimi.deib.dspace.net.NetworkManager;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Iterator;
 
+/**
+ * Contains methods for dealing with the different vm configurations local database
+ * @author Giorgio Pea <giorgio.pea@mail.polimi.it>
+ */
 public class JsonDatabase {
 	private static JsonDatabase instance;
 	
@@ -21,68 +23,79 @@ public class JsonDatabase {
 		if(instance != null){
 			return instance;
 		}
-		return new JsonDatabase();
+		instance = new JsonDatabase();
+		return instance;
 	}
 	private JsonDatabase(){
 		startupCheckings();
 	}
-	
+
+	/**
+	 * Checks if the vm configurations local database is available, if not
+	 * it creates and populates it
+	 */
 	private void startupCheckings(){
-		File jsonDbFile = new File("db.json");
+		File jsonDbFile = new File("vmconfigs.json");
 		if(!jsonDbFile.exists()){
 			refreshDbContents();
 		}
 	}
+
+	/**
+	 * Fetches vm configurations from the web and populates a database with them
+	 * @return The different vm configurations available
+	 */
 	public String[] refreshDbContents() {
-		String pre = "{\n\t\"alternatives\":[";
-		String post = "]\n}";
-		//String[] alternatives = digestAlternatives(NetworkManager.getInstance().fetchAlternatives());
-		String[] alternatives = {"Cineca-5xlarge","Amazon-xlarge","Amazon-large"};
-		try {
-			FileWriter writer = new FileWriter("db.json");
-			for(int i = 0; i<alternatives.length; i++){
-				if(i != 0){	
-					pre = pre + ",\""+alternatives[i]+"\"";
-				}
-				else{
-					pre = pre + "\""+alternatives[i]+"\"";
-				}
+		JSONArray array = NetworkManager.getInstance().fetchVmConfigs();
+		if(array != null) {
+			String[] alternatives = digestAlternatives(array);
+			try {
+				//Writes the db
+				FileWriter writer = new FileWriter("vmconfigs.json");
+				writer.write(array.toJSONString());
+				writer.close();
+				return alternatives;
+
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			System.out.println(pre+post);
-			writer.write(pre+post);
-			writer.close();
-			return alternatives;
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		return null;
 		
 	}
-	private String[] digestAlternatives(JSONObject json){
-		JSONArray array = (JSONArray) json.get("alternatives");
-		String[] returnObject = new String[array.size()];
-		Iterator<?> it = array.iterator();
+
+	/**
+	 * Parses the received json in order to output a list of vm configurations
+	 * @param json A json representing vm configurations with several parameters
+	 * @return The different vm configurations available
+	 */
+	private String[] digestAlternatives(JSONArray json){
+		String[] returnObject = new String[json.size()];
+		Iterator<?> it = json.iterator();
+		JSONObject object;
+		String name,type;
 		int i = 0;
 		while(it.hasNext()){
-			returnObject[i] = it.next().toString();
+			object = (JSONObject) it.next();
+			name = ((JSONObject) object.get("provider")).get("name").toString();
+			type = object.get("type").toString();
+			returnObject[i] = name+"-"+type;
 			i++;
 		}
 		return returnObject;
 	}
-	public String[] getAlternatives(){
+
+	/**
+	 * Fetches the different vm configurations from the database
+	 * @return the different vm configurations available
+	 */
+	public String[] getVmConfigs(){
 		JSONParser parser = new JSONParser();
 		try {
-			JSONObject parsed = (JSONObject) parser.parse(new FileReader("db.json"));
+			JSONArray parsed = (JSONArray) parser.parse(new FileReader("vmconfigs.json"));
 			return digestAlternatives(parsed);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ParseException e) {
+		} catch (IOException | ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

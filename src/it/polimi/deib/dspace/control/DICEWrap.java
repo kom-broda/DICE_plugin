@@ -1,30 +1,12 @@
 package it.polimi.deib.dspace.control;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
-import java.nio.channels.FileChannel;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Vector;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.Map.Entry;
-import java.util.Optional;
 
-import org.eclipse.core.internal.jobs.ObjectMap;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.BasicMonitor;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -34,47 +16,21 @@ import org.eclipse.uml2.uml.Device;
 import org.eclipse.uml2.uml.FinalNode;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.Transition;
-import org.json.simple.JSONObject;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import es.unizar.disco.pnml.m2m.builder.HadoopActivityDiagram2PnmlResourceBuilder;
 import es.unizar.disco.pnml.m2m.builder.StormActivityDiagram2PnmlResourceBuilder;
 import es.unizar.disco.pnml.m2t.templates.gspn.GenerateGspn;
 import es.unizar.disco.simulation.models.builders.IAnalyzableModelBuilder.ModelResult;
 import es.unizar.disco.simulation.models.datatypes.PrimitiveVariableAssignment;
 import es.unizar.disco.simulation.models.traces.Trace;
-import fr.lip6.move.pnml.ptnet.PetriNet;
 import fr.lip6.move.pnml.ptnet.PetriNetDoc;
 import fr.lip6.move.pnml.ptnet.Place;
 import it.polimi.deib.dspace.net.NetworkManager;
-import it.polimi.diceH2020.SPACE4Cloud.shared.generators.ClassParametersGenerator;
-import it.polimi.diceH2020.SPACE4Cloud.shared.generatorsDataMultiProvider.InstanceDataMultiProviderGenerator;
-import it.polimi.diceH2020.SPACE4Cloud.shared.generatorsDataMultiProvider.JobMLProfileGenerator;
-import it.polimi.diceH2020.SPACE4Cloud.shared.generatorsDataMultiProvider.JobMLProfilesMapGenerator;
-import it.polimi.diceH2020.SPACE4Cloud.shared.generatorsDataMultiProvider.PublicCloudParametersGenerator;
-import it.polimi.diceH2020.SPACE4Cloud.shared.generatorsDataMultiProvider.PublicCloudParametersMapGenerator;
-import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.ClassParameters;
-import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.ClassParametersMap;
-import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.InstanceDataMultiProvider;
-import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.JobMLProfile;
-import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.JobMLProfilesMap;
-import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.JobProfile;
-import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.JobProfilesMap;
-import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.PublicCloudParameters;
-import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.PublicCloudParametersMap;
-import it.polimi.diceH2020.SPACE4Cloud.shared.settings.Scenarios;
 
 public class DICEWrap {
 	private static DICEWrap diceWrap;
 	private ModelResult result;
 	private Configuration conf;
-//	private String fileNames[] = {"1_h8_D500000.0MapJ1Cineca5xlarge.txt","1_h8_D500000.0RSJ1Cineca5xlarge.txt",
-//	"1_h8_D500000.0.json"}; //to be replaced with conf content once web serice is ready to process it
-	private String fileNames[] = {"aaa0MapJ1Cineca5xlarge.txt","aaa0RSJ1Cineca5xlarge.txt",
-	"aaa0.json"}; //to be replaced with conf content once web service is ready to process it
-	private String scenario;
+private String scenario;
 	private String initialMarking;
 	
 	public DICEWrap(){
@@ -163,7 +119,7 @@ public class DICEWrap {
 		Resource res = set.getResource(URI.createFileURI(umlModelPath), true);
 		result = builder.createAnalyzableModel((Model)res.getContents().get(0), new BasicEList<PrimitiveVariableAssignment>());
 		
-		System.out.println("Model built");
+		System.out.println("Model built for file: " + umlModelPath);
 		
 		/*PetriNet pnd = ((PetriNetDoc)result.getModel().get(0)).getNets().get(0);
 		File aFile = new File("small.pnml"); 
@@ -186,14 +142,12 @@ public class DICEWrap {
 		result = builder.createAnalyzableModel((Model)res.getContents().get(0), new BasicEList<PrimitiveVariableAssignment>());
 	}
 	
+	//TODO: set all these methods to private
 	public void extractHadoopInitialMarking(){
-		System.out.println("Extracting marking\n");
-		System.err.println(result.getTraceSet().getTraces().size());
 		for(Trace i: result.getTraceSet().getTraces()){
-			System.out.println("Traversing traces");
-			if (i.getFromDomainElement() instanceof FinalNode  && i.getToAnalyzableElement() instanceof Transition){
-				initialMarking = ((Place)i.getToAnalyzableElement()).getInitialMarking().getText().toString();
-				System.err.println(initialMarking);
+			if (i.getFromDomainElement() instanceof FinalNode && i.getToAnalyzableElement() instanceof Transition){
+				String a = ((Place)i.getToAnalyzableElement()).getId();
+				System.err.println(a + " . AAAAAA.\n");
 			}
 		}
 	} 
@@ -202,7 +156,7 @@ public class DICEWrap {
 		File targetFolder = new File(FileManager.getInstance().getPath()+"tmp/");
 		GenerateGspn gspn = new GenerateGspn(((PetriNetDoc)result.getModel().get(0)).getNets().get(0),targetFolder, new ArrayList<EObject>());
 		gspn.doGenerate(new BasicMonitor());
-		System.out.println("GSPN generated");
+		System.out.println("GSPN generated for file");
 	}
 	
 //	public void sendModel(){

@@ -1,26 +1,17 @@
 package it.polimi.deib.dspace.control;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.io.IOUtils;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import it.polimi.deib.dspace.net.NetworkManager;
 
 public class FileHandler {
 	private List<File> files;
-	private File folder;
 	private String scenario;
-
+	private File folder;
 	public void setFolder(String path){
 		folder=new File(path);
 	}
@@ -29,9 +20,7 @@ public class FileHandler {
 		for(File f:folder.listFiles()){
 			files.add(f);
 		}
-	}
-	public void setScenario(String scenario){
-		this.scenario=scenario;
+		folder.listFiles();
 	}
 	
 	public void sendFile(){

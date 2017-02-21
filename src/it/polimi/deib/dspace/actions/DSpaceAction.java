@@ -2,7 +2,6 @@ package it.polimi.deib.dspace.actions;
 
 
 import it.polimi.deib.dspace.control.DICEWrap;
-import it.polimi.deib.dspace.control.FileManager;
 import it.polimi.deib.dspace.ui.ConfigurationDialog;
 import it.polimi.deib.dspace.ui.DSpaceWizard;
 
@@ -29,7 +28,6 @@ import it.polimi.deib.dspace.control.Configuration;
  * @see IWorkbenchWindowActionDelegate
  */
 public class DSpaceAction implements IWorkbenchWindowActionDelegate {
-	private IWorkbenchWindow window;
 	/**
 	 * The constructor.
 	 */
@@ -47,11 +45,18 @@ public class DSpaceAction implements IWorkbenchWindowActionDelegate {
 		if(action.getId().endsWith("Start")){
 			WizardDialog dialog = new WizardDialog(null, new DSpaceWizard());
 			dialog.open();
-//			System.out.println("Starting");
-//			DICEWrap.getWrapper().buildHadoopAnalyzableModel("/home/kom/Downloads/wikistats4opt/model_1_class.uml");
-//			DICEWrap.getWrapper().start();
-//			DICEWrap.getWrapper().generateInputJson();
+			System.out.println("Starting");
+//			DICEWrap.getWrapper().buildHadoopAnalyzableModel("/home/kom/Wikistats-Models/dtsm-hadoopmr/model_1_class.uml");
+//			DICEWrap.getWrapper().extractHadoopInitialMarking();
+//			try {
+//				DICEWrap.getWrapper().genGSPN();
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+			DICEWrap.getWrapper().start();
 //			DICEWrap.getWrapper().sendModel();
+//			FileManager.getInstance().generateInputJson();
 		}else{
 			System.out.println("Set up options");
 			ConfigurationDialog con=new ConfigurationDialog(new Shell());
@@ -85,7 +90,6 @@ public class DSpaceAction implements IWorkbenchWindowActionDelegate {
 	 * @see IWorkbenchWindowActionDelegate#init
 	 */
 	public void init(IWorkbenchWindow window) {
-		this.window = window;
 	}
 	private void loadConfiguration(){
 		String filePath="configFile/ConfigFile.txt";

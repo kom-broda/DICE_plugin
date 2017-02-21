@@ -11,23 +11,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
-
-import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONObject;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ser.impl.FilteredBeanPropertyWriter;
-
 import it.polimi.diceH2020.SPACE4Cloud.shared.generators.ClassParametersGenerator;
 import it.polimi.diceH2020.SPACE4Cloud.shared.generatorsDataMultiProvider.InstanceDataMultiProviderGenerator;
+import it.polimi.diceH2020.SPACE4Cloud.shared.generatorsDataMultiProvider.JobMLProfileGenerator;
 import it.polimi.diceH2020.SPACE4Cloud.shared.generatorsDataMultiProvider.JobMLProfilesMapGenerator;
 import it.polimi.diceH2020.SPACE4Cloud.shared.generatorsDataMultiProvider.PublicCloudParametersGenerator;
 import it.polimi.diceH2020.SPACE4Cloud.shared.generatorsDataMultiProvider.PublicCloudParametersMapGenerator;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.ClassParameters;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.ClassParametersMap;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.InstanceDataMultiProvider;
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.JobMLProfile;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.JobMLProfilesMap;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.JobProfilesMap;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.PublicCloudParameters;
@@ -39,7 +36,7 @@ public class FileManager {
 	private String placeHolder = "@@CORES@@";
 	
 	private FileManager(){
-		path = "/home/kom/eclipse/java-neon/eclipse/"; // to be replaced by fetching this info in tools
+		path = "/home/giorgio/eclipse/java-neon/eclipse/"; // to be replaced by fetching this info in tools
 	}
 	
 	public static FileManager getInstance(){
@@ -59,13 +56,14 @@ public class FileManager {
 		Configuration conf = Configuration.getCurrent();
 		File folder = new File(path+"tmp/");
 		File files[] = folder.listFiles();
-		System.out.println("Renaming files");
 		for(File f : files){
 			if(f.getName().endsWith(".def")){
+				System.out.println("Renaming " + f.getName());
 				f.renameTo(new File(path + conf.getID() + "J" + cdid + alt.replaceAll("-", "") + ".def"));
 				f.delete();
 			}
 			if(f.getName().endsWith(".net")){
+				System.out.println("Renaming " + f.getName());
 				putPlaceHolder(s, f.getName());
 				f.renameTo(new File(path + conf.getID() + "J" + cdid + alt.replaceAll("-", "") + ".net"));
 				f.delete();
@@ -75,6 +73,7 @@ public class FileManager {
 	
 	public void putPlaceHolder(String id, String file){
 		File f = new File(path + "tmp/" + file);
+		System.out.println("Putting placeholder over "+ id +" in file " + file);
 		try {
 			int i;
 			String newLine;
@@ -88,6 +87,7 @@ public class FileManager {
 				s = s + "\n" + newLine;
 				newLine = in.readLine();
 			}
+			in.close();
 			
 			lines = s.split("\n");
 			for (i=0; i< lines.length; i++){
@@ -207,8 +207,18 @@ public class FileManager {
 		}
 		
 		//Set mapJobMLProfile
+		Map<String, JobMLProfile> jmlMap = new HashMap<String, JobMLProfile>();
+		List<String> par = new ArrayList<String>();
+		par.add("h");
+		par.add("x");
+		
+		for(ClassDesc cd : conf.getClasses()){
+			JobMLProfile jmlProfile = JobMLProfileGenerator.build(par);
+			jmlMap.put(String.valueOf(cd.getId()), jmlProfile);
+		}
+		
 		JobMLProfilesMap jML = JobMLProfilesMapGenerator.build();
-		jML.setMapJobMLProfile(null);
+		jML.setMapJobMLProfile(jmlMap);
 		data.setMapJobMLProfiles(jML);
 		
 		//Set MapVMConfigurations
@@ -244,7 +254,7 @@ public class FileManager {
 		List<File> toSend = new ArrayList<File>();
 		
 		for(File f : files){
-			if(f.getName().startsWith(Configuration.getCurrent().getID())){
+			if(f.getName().startsWith(Configuration.getCurrent().getID()) && !f.getName().contains("OUT")){
 				toSend.add(f);
 			}
 		}
