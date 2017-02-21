@@ -186,7 +186,6 @@ public class ResultCheck extends TimerTask{
 				e.printStackTrace();
 			}
 		}
-		System.out.println("size"+ urlPos);
 		 PrintWriter writer;
 		try {
 			writer = new PrintWriter("results", "UTF-8");
