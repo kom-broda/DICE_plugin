@@ -1,5 +1,11 @@
 package it.polimi.deib.dspace.control;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Vector;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -16,6 +22,7 @@ public class Configuration {
 	private int r = -1;
 	private float spsr = -1;
 	private String savingDir;
+
 	
 	public Configuration(){
 		classes = new Vector<ClassDesc>();
@@ -119,4 +126,5 @@ public class Configuration {
 	public void setSavingDir(String savingDir){
 		this.savingDir=savingDir;
 	}
+	
 }

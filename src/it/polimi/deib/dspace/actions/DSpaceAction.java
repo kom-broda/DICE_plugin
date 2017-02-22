@@ -91,50 +91,6 @@ public class DSpaceAction implements IWorkbenchWindowActionDelegate {
 	 */
 	public void init(IWorkbenchWindow window) {
 	}
-	private void loadConfiguration(){
-		String filePath="configFile/ConfigFile.txt";
-		String defaultId="http://specclient1.dei.polimi.it:8018/";
-		File f = new File(filePath);
-		if(!(f.exists() && !f.isDirectory())) { 
-			try{
-			    PrintWriter writer = new PrintWriter(filePath, "UTF-8");
-			    Configuration.getCurrent().setServerID(defaultId);
-			    writer.println(defaultId);
-			    writer.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}else{
-			BufferedReader br=null;
-			try {
-				br = new BufferedReader(new FileReader(filePath));
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			try {
-			    StringBuilder sb = new StringBuilder();
-			    String line = br.readLine();
-
-			    while (line != null) {
-			        sb.append(line);
-			        sb.append(System.lineSeparator());
-			        line = br.readLine();
-			    }
-			    String everything = sb.toString();
-			    Configuration.getCurrent().setServerID(everything);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} finally {
-			    try {
-					br.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-	}
+	
 	
 }

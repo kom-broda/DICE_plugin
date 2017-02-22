@@ -66,8 +66,8 @@ public final class EmbeddedBrowser {
         browser.addLocationListener(new LocationListener(){
 			@Override
 			public void changing(LocationEvent event) {
-				if(event.location.contains("asdkljflak")){
-					
+				if(event.location.equals("http://localhost:8000/")){
+					browser.setUrl(URL);
 				}
 				if(event.location.contains("downloadZipOpt")){
 		        	JFileChooser j = new JFileChooser();
