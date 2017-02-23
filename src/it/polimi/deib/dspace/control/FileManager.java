@@ -18,6 +18,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.io.FileUtils;
+
 import org.json.simple.JSONObject;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -25,8 +26,6 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ser.impl.FilteredBeanPropertyWriter;
-
 import it.polimi.diceH2020.SPACE4Cloud.shared.generators.ClassParametersGenerator;
 import it.polimi.diceH2020.SPACE4Cloud.shared.generatorsDataMultiProvider.InstanceDataMultiProviderGenerator;
 import it.polimi.diceH2020.SPACE4Cloud.shared.generatorsDataMultiProvider.JobMLProfileGenerator;
@@ -48,7 +47,7 @@ public class FileManager {
 	private String placeHolder = "@@CORES@@";
 	
 	private FileManager(){
-		path = "/home/kom/eclipse/java-neon/eclipse/"; // to be replaced by fetching this info in tools
+		path = "/home/giorgio/eclipse/java-neon/eclipse/"; // to be replaced by fetching this info in tools
 	}
 	
 	public static FileManager getInstance(){
@@ -99,6 +98,7 @@ public class FileManager {
 				s = s + "\n" + newLine;
 				newLine = in.readLine();
 			}
+			in.close();
 			
 			lines = s.split("\n");
 			for (i=0; i< lines.length; i++){
