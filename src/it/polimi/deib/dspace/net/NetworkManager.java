@@ -11,10 +11,7 @@ import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.client.LaxRedirectStrategy;
 import org.apache.http.util.EntityUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -92,39 +89,6 @@ public class NetworkManager {
 		return null;
 		
 	}
-	/**
-	 * Sends to the backend the models to be simulated
-	 * @param files The model files
-	 * @param scenario The scenario parameter
-	 * @throws UnsupportedEncodingException 
-	 */
-	/*
-	public void sendModel(List<File> files, String scenario) throws UnsupportedEncodingException{
-		HttpClient httpclient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build();
-		HttpResponse response;
-		HttpPost post = new HttpPost(modelUploadEndpoint);
-		
-		MultipartEntityBuilder builder = MultipartEntityBuilder.create();  
-		builder.addPart("scenario",new StringBody(scenario,ContentType.DEFAULT_TEXT));
-		for(File file:files){
-			builder.addPart("file[]", new FileBody(file));
-		}
-	    post.setEntity(builder.build());
-	    try {
-	    	response = httpclient.execute(post);
-	    	System.out.println(response.toString());
-			if(response.getStatusLine().getStatusCode() != 302){
-				System.err.println("Error: POST not succesfull");
-			}
-			else{
-				//response.close();
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	*/
 	
 	/**
 	 * Sends to the backend the models to be simulated

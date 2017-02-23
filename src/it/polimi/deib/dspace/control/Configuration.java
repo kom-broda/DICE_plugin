@@ -1,7 +1,6 @@
 package it.polimi.deib.dspace.control;
 
 import java.util.ArrayList;
-import java.util.Vector;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Configuration {
@@ -13,10 +12,17 @@ public class Configuration {
 	private String technology;
 	private boolean hasLTC; //Long Term Contract already existing
 	private String ID;
-	private String serverID;
+	private int thinkTime;
+	private int hlow;
+	private int hup;
+	private double hadoopD;
+	private int numM;
+	private int numR;
+	private int population;
+	private double stormU;
 	private int r = -1;
 	private float spsr = -1;
-	private String savingDir;
+
 
 	
 	public Configuration(){
@@ -95,15 +101,7 @@ public class Configuration {
 	public boolean getHasLtc(){
 		return hasLTC;
 	}
-	
-	public void setServerID(String serverId){
-		this.serverID=serverId;
-	}
-	
-	public String getServerID(){
-		return this.serverID;
-	}
-	
+
 	public int getR() {
 		return r;
 	}
@@ -118,20 +116,76 @@ public class Configuration {
 
 	public void setSpsr(float spsr) {
 		this.spsr = spsr;
+	}
 
-	}
-	
-	public String getSavingDir(){
-		return this.savingDir;
-	}
-	
-	public void setSavingDir(String savingDir){
-		this.savingDir=savingDir;
-	}
 	
 	public void reset(){
 		this.classes.clear();
 		ID = generateName();
+	}
+
+	public int getThinkTime() {
+		return thinkTime;
+	}
+
+	public void setThinkTime(int thinkTime) {
+		this.thinkTime = thinkTime;
+	}
+
+	public int getHlow() {
+		return hlow;
+	}
+
+	public void setHlow(int hlow) {
+		this.hlow = hlow;
+	}
+
+	public int getHup() {
+		return hup;
+	}
+
+	public void setHup(int hup) {
+		this.hup = hup;
+	}
+
+	public double getHadoopD() {
+		return hadoopD;
+	}
+
+	public void setHadoopD(double d) {
+		this.hadoopD = d;
+	}
+
+	public int getNumR() {
+		return numR;
+	}
+
+	public void setNumR(int numR) {
+		this.numR = numR;
+	}
+
+	public int getNumM() {
+		return numM;
+	}
+
+	public void setNumM(int numM) {
+		this.numM = numM;
+	}
+
+	public int getPopulation() {
+		return population;
+	}
+
+	public void setPopulation(int population) {
+		this.population = population;
+	}
+
+	public double getStormU() {
+		return stormU;
+	}
+
+	public void setStormU(double stormU) {
+		this.stormU = stormU;
 	}
 	
 }
