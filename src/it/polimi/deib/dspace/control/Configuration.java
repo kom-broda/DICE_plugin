@@ -1,12 +1,13 @@
 package it.polimi.deib.dspace.control;
 
+import java.util.ArrayList;
 import java.util.Vector;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Configuration {
 	private static Configuration currentConf;
 	
-	private Vector<ClassDesc> classes;
+	private ArrayList<ClassDesc> classes;
 	private int numClasses;
 	private boolean isPrivate = false;
 	private String technology;
@@ -19,7 +20,7 @@ public class Configuration {
 
 	
 	public Configuration(){
-		classes = new Vector<ClassDesc>();
+		classes = new ArrayList<ClassDesc>();
 		ID = generateName();
 	}
 	
@@ -46,12 +47,12 @@ public class Configuration {
 		this.numClasses = numClasses;
 	}
 
-	public Vector<ClassDesc> getClasses() {
+	public ArrayList<ClassDesc> getClasses() {
 		return classes;
 	}
 	
 	public ClassDesc getCurrentClass(){
-		return classes.lastElement();
+		return classes.get(classes.size() - 1);
 	}
 	
 	public void dump(){
@@ -86,9 +87,11 @@ public class Configuration {
 		return isPrivate;
 	}
 	
+	//TODO: is this method any useful?
 	public boolean isComplete(){
 		return(numClasses == classes.size() && numClasses > 0 && technology != null);
 	}
+	
 	public boolean getHasLtc(){
 		return hasLTC;
 	}
@@ -107,8 +110,9 @@ public class Configuration {
 
 	public void setSpsr(float spsr) {
 		this.spsr = spsr;
-
 	}
+
+	
 	public void reset(){
 		this.classes.clear();
 		ID = generateName();
