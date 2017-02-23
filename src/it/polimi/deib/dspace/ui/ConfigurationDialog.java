@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -37,6 +39,7 @@ public class ConfigurationDialog extends Dialog {
 	private Button selSave;
 	private int loadwaitTime;
 	private String loadServer;
+	private String defaultSavingDir;
 	
 	public ConfigurationDialog(Shell parent) {
 		super(parent);
@@ -44,6 +47,7 @@ public class ConfigurationDialog extends Dialog {
 		this.shell=parent;
 		changed=false;
 		server="";
+		
 	}
 	public void setView(){
 		GridLayout layout=new GridLayout();
@@ -96,6 +100,7 @@ public class ConfigurationDialog extends Dialog {
             	if (choice!= JFileChooser.APPROVE_OPTION) return;
             	savingDir=j.getSelectedFile().getAbsolutePath();
             	l3.setText(savingDir);
+            	
             	shell.update();
              }
         });
@@ -141,6 +146,10 @@ public class ConfigurationDialog extends Dialog {
 			this.loadServer=defaultId;
 			this.loadwaitTime=defaultTime;
 			this.timeToWait=defaultTime;
+			Path currentRelativePath = Paths.get("");
+			String s = currentRelativePath.toAbsolutePath().toString();
+			this.defaultSavingDir=s;
+			this.savingDir=defaultSavingDir;
 		}else{
 			BufferedReader br=null;
 			try {
@@ -163,6 +172,8 @@ public class ConfigurationDialog extends Dialog {
 			    this.loadServer=server;
 			    this.timeToWait=Integer.parseInt(sp[1]);
 			    this.loadwaitTime=timeToWait;
+			    this.defaultSavingDir=sp[2];
+			    this.savingDir=sp[2];
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -195,7 +206,7 @@ public class ConfigurationDialog extends Dialog {
 		}
 	}
 	private void setChanged(){
-		if(this.loadwaitTime!=this.timeToWait||!this.loadServer.equals(this.server)){
+		if(this.loadwaitTime!=this.timeToWait||!this.loadServer.equals(this.server)||!this.defaultSavingDir.equals(this.savingDir)){
 			this.changed=true;
 		}else{
 		this.changed=false;

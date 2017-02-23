@@ -36,7 +36,7 @@ public class FileManager {
 	private String placeHolder = "@@CORES@@";
 	
 	private FileManager(){
-		path = "/home/arlind/eclipse/java-neon2/eclipse/"; // to be replaced by fetching this info in tools
+		path =GeneralConfig.getCurrent().getSavingDir()+"/"; // to be replaced by fetching this info in tools
 	}
 	
 	public static FileManager getInstance(){
@@ -231,7 +231,7 @@ public class FileManager {
 		String s="";
 		try {
 			s = mapper.writeValueAsString(data);
-			mapper.writerWithDefaultPrettyPrinter().writeValue(new File(conf.getID()+".json"), data);
+			mapper.writerWithDefaultPrettyPrinter().writeValue(new File(path+conf.getID()+".json"), data);
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -274,7 +274,7 @@ public class FileManager {
 		
 		try {
 			mapper.writerWithDefaultPrettyPrinter().writeValue(
-					new File(Configuration.getCurrent().getID() + "OUT.json"), json);
+					new File(path+Configuration.getCurrent().getID() + "OUT.json"), json);
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -18,6 +18,9 @@ import java.util.List;
 import java.util.TimerTask;
 
 import javax.swing.JOptionPane;
+
+import it.polimi.deib.dspace.net.NetworkManager;
+
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 public class ResultCheck extends TimerTask{
@@ -62,7 +65,7 @@ public class ResultCheck extends TimerTask{
 		    String[] st=everything.split("\n");
 		    for(int i=0;i<st.length;i++){
 		    	if(i%2==0){
-		    		this.fileNames.add(st[i]+"OUT.json");
+		    		this.fileNames.add(FileManager.getInstance().getPath()+st[i]+"OUT.json");
 		    	}else{
 		    		this.urls.add(st[i]);	
 		    	}
@@ -127,7 +130,7 @@ public class ResultCheck extends TimerTask{
 	 
 	            // opens input stream from the HTTP connection
 	            InputStream inputStream = httpConn.getInputStream();
-	            String saveFilePath =  fileName;
+	            String saveFilePath = FileManager.getInstance().getPath()+fileName;
 	             
 	            // opens an output stream to save into file
 	            FileOutputStream outputStream = new FileOutputStream(saveFilePath);
