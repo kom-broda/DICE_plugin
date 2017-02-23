@@ -2,6 +2,7 @@ package it.polimi.deib.dspace.actions;
 
 
 import it.polimi.deib.dspace.control.DICEWrap;
+import it.polimi.deib.dspace.control.FileManager;
 import it.polimi.deib.dspace.ui.ConfigurationDialog;
 import it.polimi.deib.dspace.ui.DSpaceWizard;
 
@@ -54,9 +55,9 @@ public class DSpaceAction implements IWorkbenchWindowActionDelegate {
 //				// TODO Auto-generated catch block
 //				e.printStackTrace();
 //			}
-			DICEWrap.getWrapper().start();
+//			DICEWrap.getWrapper().start();
 //			DICEWrap.getWrapper().sendModel();
-//			FileManager.getInstance().generateInputJson();
+			FileManager.getInstance().generateInputJson();
 		}else{
 			ConfigurationDialog con=new ConfigurationDialog(new Shell());
 			con.load();
