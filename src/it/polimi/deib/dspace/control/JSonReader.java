@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -36,13 +37,13 @@ public class JSonReader {
 	private List<String> classes;
 	private Map<String,String> idClassUmlFile;
 	private String filePath;
-	public JSonReader(Map<String,String> idClassUmlFile,String filePath){
+	public JSonReader(String filePath){
 		setProvider("");
 		setClassNumVM(new HashMap<String,Long>());
 		setClassTypeVM(new HashMap<String,String>());
 		classes=new ArrayList<String>();
-		this.idClassUmlFile=idClassUmlFile;
 		this.filePath=filePath;
+		idClassUmlFile=new HashMap<String,String>();
 	}
 	
 	
@@ -90,15 +91,17 @@ try {
 	        Document doc = dBuilder.parse(inputFile);
 	        doc.getDocumentElement().normalize();
 	        Element root=doc.getDocumentElement();
-	        NodeList nodes=root.getElementsByTagName("DDSM:DdsmVm");
+	        NodeList nodes=root.getElementsByTagName("DICERProfile:VMsCluster");
 	        Node n=nodes.item(0);
 	        NamedNodeMap atributes=n.getAttributes();
-	        Node nodeAttrprov = atributes.getNamedItem("provider");
-	 		nodeAttrprov.setTextContent(provider);
-	        Node nodeAttrNumVm=atributes.getNamedItem("instances");
+	        Node nodeAttrNumVm=atributes.getNamedItem("vmInstance");
 	        nodeAttrNumVm.setTextContent(this.classNumVM.get(id).toString());
 	        Node nodeAttrType=atributes.getNamedItem("genericSize");
 	        nodeAttrType.setTextContent(this.classTypeVM.get(id));
+	        NodeList n1=n.getChildNodes();
+	        NamedNodeMap providerEl= root.getElementsByTagName("provider").item(0).getAttributes();
+	        Node provAtt=providerEl.getNamedItem("type");
+	        provAtt.setTextContent(provider);
 	      // write the content into xml file
 	 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 	 		Transformer transformer = transformerFactory.newTransformer();
@@ -152,5 +155,29 @@ try {
 	public void setClassTypeVM(Map<String,String> classTypeVM) {
 		this.classTypeVM = classTypeVM;
 	}
+	public void createMap(String jsonFilePath){
+		FileReader reader;
 	
+		try {
+			reader = new FileReader(jsonFilePath);
+			JSONParser jsonParser = new JSONParser();
+			JSONObject jsonObject = (JSONObject) jsonParser.parse(reader);
+			Set<?> keys =  jsonObject.keySet();
+
+			for(Object s:keys){
+				this.idClassUmlFile.put((String) s, (String) jsonObject.get(s));
+			}
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 }

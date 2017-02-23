@@ -15,6 +15,8 @@ public class Configuration {
 	private String serverID;
 	private int r = -1;
 	private float spsr = -1;
+	private String savingDir;
+
 	
 	public Configuration(){
 		classes = new Vector<ClassDesc>();
@@ -112,4 +114,15 @@ public class Configuration {
 		this.spsr = spsr;
 
 	}
+	public String getSavingDir(){
+		return this.savingDir;
+	}
+	public void setSavingDir(String savingDir){
+		this.savingDir=savingDir;
+	}
+	public void reset(){
+		this.classes.clear();
+		ID = generateName();
+	}
+	
 }
