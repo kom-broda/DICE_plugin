@@ -55,12 +55,10 @@ public class DSpaceAction implements IWorkbenchWindowActionDelegate {
 //				// TODO Auto-generated catch block
 //				e.printStackTrace();
 //			}
-			System.out.println("here");
 			DICEWrap.getWrapper().start();
 //			DICEWrap.getWrapper().sendModel();
 //			FileManager.getInstance().generateInputJson();
 		}else{
-			System.out.println("Set up options");
 			ConfigurationDialog con=new ConfigurationDialog(new Shell());
 			con.load();
 			con.setView();

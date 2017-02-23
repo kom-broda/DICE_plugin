@@ -147,16 +147,14 @@ public class NetworkManager {
 	    	response = httpclient.execute(post);
 	    	String json = EntityUtils.toString(response.getEntity());
 	    	HttpPost repost=new HttpPost(this.getLink(json));
-	    	System.out.println(json);
 	    	response=httpclient.execute(repost);
 	    	String js = EntityUtils.toString(response.getEntity());
-	    	System.out.println(js);
 	    	parseJson(js);
-	    	if(response.getStatusLine().getStatusCode() != 302){
+	    	System.out.println("Code : "+response.getStatusLine().getStatusCode());
+	    	if(response.getStatusLine().getStatusCode() != 200){
 				System.err.println("Error: POST not succesfull");
 			}
 			else{
-				//response.close();
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
