@@ -43,6 +43,7 @@ public class DSpaceAction implements IWorkbenchWindowActionDelegate {
 	public void run(IAction action) {
 		System.out.println("Hola "+action.getId());
 		if(action.getId().endsWith("Start")){
+			Configuration.getCurrent().reset();
 			WizardDialog dialog = new WizardDialog(null, new DSpaceWizard());
 			dialog.open();
 			System.out.println("Starting");
@@ -54,6 +55,7 @@ public class DSpaceAction implements IWorkbenchWindowActionDelegate {
 //				// TODO Auto-generated catch block
 //				e.printStackTrace();
 //			}
+			System.out.println("here");
 			DICEWrap.getWrapper().start();
 //			DICEWrap.getWrapper().sendModel();
 //			FileManager.getInstance().generateInputJson();

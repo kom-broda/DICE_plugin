@@ -62,7 +62,6 @@ public class ResultCheck extends TimerTask{
 		    String[] st=everything.split("\n");
 		    for(int i=0;i<st.length;i++){
 		    	if(i%2==0){
-		    		System.out.print(st[i]);
 		    		this.fileNames.add(st[i]+"OUT.json");
 		    	}else{
 		    		this.urls.add(st[i]);	
@@ -85,7 +84,6 @@ public class ResultCheck extends TimerTask{
 		for(int i=0;i<this.urls.size();i++){
 			try {
 				String fPath=this.downloadFile(urls.get(i));
-				System.out.println("soms"+fPath+"\n");
 				if(!fPath.equals("")){
 					  JOptionPane.showMessageDialog(null, "Results availble", "InfoBox: " , JOptionPane.INFORMATION_MESSAGE);
 					  
@@ -129,7 +127,6 @@ public class ResultCheck extends TimerTask{
 	 
 	            // opens input stream from the HTTP connection
 	            InputStream inputStream = httpConn.getInputStream();
-	            //Configuration.getCurrent().getSavingDir() + File.separator;
 	            String saveFilePath =  fileName;
 	             
 	            // opens an output stream to save into file

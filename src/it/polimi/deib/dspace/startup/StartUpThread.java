@@ -5,13 +5,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import org.eclipse.ui.IStartup;
 
-import it.polimi.deib.dspace.control.Configuration;
 import it.polimi.deib.dspace.control.ResultCheck;
 
 public class StartUpThread implements IStartup{

@@ -47,6 +47,7 @@ private String scenario;
 	
 	public void start(){
 		conf = Configuration.getCurrent();
+		System.out.println(conf.getID());
 		if(!conf.isComplete()){
 			System.out.println("Incomplete, aborting"); //TODO check completion for real
 			return;
