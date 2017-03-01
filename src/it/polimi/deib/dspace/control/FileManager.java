@@ -12,25 +12,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.Vector;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import org.apache.commons.io.FileUtils;
 
 import org.json.simple.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -209,6 +200,7 @@ public class FileManager {
 		Map<String, ClassParameters> classdesc1 = new HashMap<String, ClassParameters>();
 		for(ClassDesc c : conf.getClasses()){
 			ClassParameters clpm = ClassParametersGenerator.build(7);
+			
 			clpm.setD(500000.0);
 			clpm.setPenalty(6.0);
 			clpm.setThink(10000.0);
@@ -258,7 +250,7 @@ public class FileManager {
 			//TODO: private case
 		}
 		
-		//Set mapJobMLProfile
+		//Set mapJobMLProfile - MACHINE LEARNING
 		Map<String, JobMLProfile> jmlMap = new HashMap<String, JobMLProfile>();
 		List<String> par = new ArrayList<String>();
 		par.add("h");
