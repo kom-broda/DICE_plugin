@@ -21,6 +21,7 @@ public class DSpaceWizard extends Wizard{
 	private HadoopDataPage hPage;
 	private SelectFolderPage folPage;
 	private StormDataPage stPage;
+	private PrivateConfigPage prConfigPage;
 	private int n = 0;
 	private int classes;
 	private ClassDesc c;
@@ -46,6 +47,9 @@ public class DSpaceWizard extends Wizard{
 		folPage=new SelectFolderPage("Select folder");
 		hPage=new HadoopDataPage("Set Hadoop parameters");
 		stPage=new StormDataPage("Set Storm parameter");
+		prConfigPage=new PrivateConfigPage("Set cluster parameters");
+		
+		addPage(prConfigPage);
 		addPage(choice);
 		addPage(folPage);
 		addPage(stPage);
