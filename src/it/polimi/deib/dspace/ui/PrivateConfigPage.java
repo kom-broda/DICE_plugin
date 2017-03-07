@@ -284,7 +284,7 @@ public class PrivateConfigPage extends WizardPage{
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				loadFile();
-				
+				getWizard().getContainer().updateButtons();
 			}
         	
         	
@@ -324,8 +324,6 @@ public class PrivateConfigPage extends WizardPage{
 		}
 		return false;
 	}
-	
-	
 	
 	
 	
@@ -472,6 +470,19 @@ public class PrivateConfigPage extends WizardPage{
 		}
 	}
 	
+	public int getNumNodes(){
+		return this.numNodes;
+	}
+	public double getMemForNode(){
+		return this.memForNode;
+	}
+	
+	public double getCostNode(){
+		return this.costNode;
+	}
+	public double getCpuNode(){
+		return this.cpuForNode;
+	}
 	
 	
 	

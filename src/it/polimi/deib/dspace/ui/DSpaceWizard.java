@@ -6,6 +6,7 @@ import org.eclipse.jface.wizard.Wizard;
 import it.polimi.deib.dspace.control.ClassDesc;
 import it.polimi.deib.dspace.control.Configuration;
 import it.polimi.deib.dspace.control.FileHandler;
+import it.polimi.deib.dspace.control.PrivateConfiguration;
 
 /**
  * Class needed by Eclipse to manage wizards. The core of this class is getNextPage() method.
@@ -49,8 +50,9 @@ public class DSpaceWizard extends Wizard{
 		stPage=new StormDataPage("Set Storm parameter");
 		prConfigPage=new PrivateConfigPage("Set cluster parameters");
 		
-		addPage(prConfigPage);
+		
 		addPage(choice);
+		addPage(prConfigPage);
 		addPage(folPage);
 		addPage(stPage);
 		addPage(hPage);
@@ -68,7 +70,9 @@ public class DSpaceWizard extends Wizard{
 				Configuration.getCurrent().setR(choice.getR());
 				Configuration.getCurrent().setSpsr(choice.getSpsr());
 			}
-			
+			if(Configuration.getCurrent().getIsPrivate()){
+				return prConfigPage;
+			}
 				classp.udpate();
 				classp.setNumClasses(classes);
 				return classp;
@@ -85,7 +89,8 @@ public class DSpaceWizard extends Wizard{
 			}
 			classp.reset();
 			hPage.reset();
-			
+			if(Configuration.getCurrent().getIsPrivate())
+				classp.privateCase();
 			return classp;
 			
 		}
@@ -98,7 +103,9 @@ public class DSpaceWizard extends Wizard{
 			}
 			classp.reset();
 			stPage.reset();
-			
+			if(Configuration.getCurrent().getIsPrivate())
+				classp.privateCase();
+
 			return classp;
 		}
 		
@@ -111,7 +118,7 @@ public class DSpaceWizard extends Wizard{
 			c.setAltDtsm(classp.getAltDtsm());
 			Configuration.getCurrent().getClasses().add(c);
 			if(Configuration.getCurrent().getTechnology().contains("Hadoop")){
-			return hPage;
+				return hPage;
 			}else{
 				return stPage;
 			}
@@ -125,6 +132,21 @@ public class DSpaceWizard extends Wizard{
 			finish = true;
 			return fpage;
 		}
+		
+		if(currentPage==this.prConfigPage){
+			PrivateConfiguration.getCurrent().setPriE(prConfigPage.getCostNode());
+			PrivateConfiguration.getCurrent().setPriM(prConfigPage.getMemForNode());
+			PrivateConfiguration.getCurrent().setPriN(prConfigPage.getNumNodes());
+			PrivateConfiguration.getCurrent().setPriV(prConfigPage.getCpuNode());
+			classp.privateCase();
+			classp.udpate();
+			return classp;
+		}
+		
+		
+		
+		
+		
 		
 		return null;
 	}

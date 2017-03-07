@@ -3,6 +3,7 @@ package it.polimi.deib.dspace.actions;
 
 import it.polimi.deib.dspace.control.DICEWrap;
 import it.polimi.deib.dspace.control.FileManager;
+import it.polimi.deib.dspace.control.PrivateConfiguration;
 import it.polimi.deib.dspace.ui.ConfigurationDialog;
 import it.polimi.deib.dspace.ui.DSpaceWizard;
 
@@ -46,6 +47,7 @@ public class DSpaceAction implements IWorkbenchWindowActionDelegate {
 		System.out.println("Hola "+action.getId());
 		if(action.getId().endsWith("Start")){
 			Configuration.getCurrent().reset();
+			PrivateConfiguration.getCurrent().clear();
 			WizardDialog dialog = new WizardDialog(null, new DSpaceWizard());
 			dialog.open();
 			System.out.println("Starting");

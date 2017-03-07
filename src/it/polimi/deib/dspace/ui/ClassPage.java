@@ -16,6 +16,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 
 import it.polimi.deib.dspace.control.Configuration;
+import it.polimi.deib.dspace.control.PrivateConfiguration;
+import it.polimi.deib.dspace.control.VmClass;
 import utils.JsonDatabase;
 /**
  * Allows user to set parameters for this class.
@@ -32,6 +34,7 @@ public class ClassPage extends WizardPage{
 	private HashMap<String, String> altDtsm;
 	private Button mlProfile ;
 	private String mlPath="";
+	private Button button;
 	protected ClassPage(String title, String description) {
 		super("Browse Files");
 		setTitle(title);
@@ -129,7 +132,7 @@ public class ClassPage extends WizardPage{
 		new Label(container, SWT.NONE);
 		new Label(container, SWT.NONE);
 		new Label(container, SWT.NONE);
-		Button button = new Button(container, SWT.PUSH);
+		button = new Button(container, SWT.PUSH);
 		button.setText("Refresh vm configurations");
 		button.addSelectionListener(new SelectionAdapter(){
 			public void widgetSelected(SelectionEvent e) {
@@ -202,8 +205,14 @@ public class ClassPage extends WizardPage{
 	
 	@Override
 	public boolean canFlipToNextPage(){
+		if(Configuration.getCurrent().getTechnology().contains("Hadoop")){
+			if(!ddsmPath.equals("") && l2.getItemCount() > 0&&!mlPath.equals("")){
+				return true;
+			}else{
+				return false;
+			}
+		}
 		if(!ddsmPath.equals("") && l2.getItemCount() > 0){
-			System.out.println("Can turn");
 			return true;
 		}
 		return false;
@@ -264,6 +273,14 @@ public class ClassPage extends WizardPage{
 	
 	public String getMlPath(){
 		return mlPath;
+	}
+	
+	public void privateCase(){
+		button.setVisible(false);
+		l1.removeAll();
+		for(VmClass vm:PrivateConfiguration.getCurrent().getVmList()){
+			l1.add(vm.getName());
+		}
 	}
 	
 }
