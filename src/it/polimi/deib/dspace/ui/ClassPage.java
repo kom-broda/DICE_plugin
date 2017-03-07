@@ -35,6 +35,7 @@ public class ClassPage extends WizardPage{
 	private Button mlProfile ;
 	private String mlPath="";
 	private Button button;
+	private Label mlNameFile;
 	protected ClassPage(String title, String description) {
 		super("Browse Files");
 		setTitle(title);
@@ -157,6 +158,7 @@ public class ClassPage extends WizardPage{
 		new Label(container, SWT.NONE);
 		new Label(container, SWT.NONE);
 		new Label(container, SWT.NONE);
+		mlNameFile=new Label(container,SWT.NONE);
 		
 		
 		mlProfile.addSelectionListener(new SelectionAdapter() {
@@ -170,7 +172,7 @@ public class ClassPage extends WizardPage{
             	
             	mlPath = chooser.getSelectedFile().getPath();
             	
-            	fileName.setText(chooser.getSelectedFile().getName());
+            	mlNameFile.setText(chooser.getSelectedFile().getName());
             	//setPageComplete(true);
             	container.layout();
             	getWizard().getContainer().updateButtons();
