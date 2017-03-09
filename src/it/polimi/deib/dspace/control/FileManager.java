@@ -254,10 +254,15 @@ public class FileManager {
 				
 				
 				Map<String,JobProfile> profilemap = new HashMap<String,JobProfile>();
-				profilemap.put(split[1], jp);
 				
-				alternative.put(split[0], profilemap);
-			}
+				if(!Configuration.getCurrent().getIsPrivate()){
+					profilemap.put(split[1], jp);
+					alternative.put(split[0], profilemap);
+				}else{
+					profilemap.put(split[0], jp);
+					alternative.put("inHouse", profilemap);
+				}
+				}
 			classMap.put(String.valueOf(c.getId()), alternative);
 			//classdesc.put(String.valueOf(c.getId()), alternatives);
 		}
