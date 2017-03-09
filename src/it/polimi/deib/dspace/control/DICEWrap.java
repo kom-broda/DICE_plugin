@@ -205,7 +205,7 @@ public class DICEWrap {
 	 * @param alt
 	 */
 	public void generatePNML(String classID, String alt){
-		PetriNet pnd = ((PetriNetDoc)result.getModel().get(0)).getNets().get(0);
+		PetriNetDoc pnd = (PetriNetDoc)result.getModel().get(0);
 		File aFile = new File(conf.getID() + "J" + classID + alt.replaceAll("-", "") + ".pnml"); 
 	    FileOutputStream outputFile = null; 
 	    try {
