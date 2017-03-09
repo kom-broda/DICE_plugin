@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeMap;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -34,6 +35,8 @@ import it.polimi.diceH2020.SPACE4Cloud.shared.generatorsDataMultiProvider.JobPro
 import it.polimi.diceH2020.SPACE4Cloud.shared.generatorsDataMultiProvider.PrivateCloudParametersGenerator;
 import it.polimi.diceH2020.SPACE4Cloud.shared.generatorsDataMultiProvider.PublicCloudParametersGenerator;
 import it.polimi.diceH2020.SPACE4Cloud.shared.generatorsDataMultiProvider.PublicCloudParametersMapGenerator;
+import it.polimi.diceH2020.SPACE4Cloud.shared.generatorsDataMultiProvider.VMConfigurationsGenerator;
+import it.polimi.diceH2020.SPACE4Cloud.shared.generatorsDataMultiProvider.VMConfigurationsMapGenerator;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.ClassParameters;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.ClassParametersMap;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.InstanceDataMultiProvider;
@@ -44,6 +47,8 @@ import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.JobProfiles
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.PrivateCloudParameters;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.PublicCloudParameters;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.PublicCloudParametersMap;
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.VMConfiguration;
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.VMConfigurationsMap;
 
 /**
  * Contains all the methods related with file generation/transformation that we 
@@ -171,7 +176,7 @@ public class FileManager {
 			}
 		}
 		else{
-			//TODO: private case
+			setPrivateParameters(data);
 		}	
 		setMachineLearningProfile(data, conf);
 		//Set MapVMConfigurations
@@ -189,6 +194,27 @@ public class FileManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	private void setPrivateParameters(InstanceDataMultiProvider data) {
+		PrivateCloudParameters pr= PrivateCloudParametersGenerator.build();
+		pr.setE(PrivateConfiguration.getCurrent().getPriE());
+		pr.setM(PrivateConfiguration.getCurrent().getPriM());
+		pr.setN(PrivateConfiguration.getCurrent().getPriN());
+		pr.setV(PrivateConfiguration.getCurrent().getPriV());
+		data.setPrivateCloudParameters(pr);
+		VMConfigurationsMap priMap= VMConfigurationsMapGenerator.build();
+		Map<String, VMConfiguration> mapVMConfigurations=new HashMap<String,VMConfiguration>();
+		for(VmClass v:PrivateConfiguration.getCurrent().getVmList()){
+			VMConfiguration vmConf= VMConfigurationsGenerator.build(2);
+			vmConf.setCore(v.getCore());
+			vmConf.setMemory(v.getMemory());
+			Optional<Double> opt=Optional.of(v.getCost());
+			vmConf.setCost(opt);
+			mapVMConfigurations.put(v.getName(), vmConf);
+		}
+		priMap.setMapVMConfigurations(mapVMConfigurations);
+		data.setMapVMConfigurations(priMap);
 	}
 
 	private void setMapJobProfile(InstanceDataMultiProvider data, Configuration conf){
@@ -282,7 +308,7 @@ public class FileManager {
 			}
 			classdesc2.put(String.valueOf(c.getId()), alternatives);
 		}
-		
+
 		PublicCloudParametersMap pub = PublicCloudParametersMapGenerator.build();
 		pub.setMapPublicCloudParameters(classdesc2);
 		
