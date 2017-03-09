@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -18,7 +19,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -47,6 +50,7 @@ import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.JobProfiles
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.PrivateCloudParameters;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.PublicCloudParameters;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.PublicCloudParametersMap;
+import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.SVRFeature;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.VMConfiguration;
 import it.polimi.diceH2020.SPACE4Cloud.shared.inputDataMultiProvider.VMConfigurationsMap;
 
@@ -167,6 +171,8 @@ public class FileManager {
 		setMapClassParameters(data,conf);
 		
 		if(!conf.getIsPrivate()){
+			//Set MapVMConfigurations
+			data.setMapVMConfigurations(null);
 			data.setPrivateCloudParameters(null);
 			if(conf.getHasLtc()){
 				setEtaR(data, conf);
@@ -179,8 +185,6 @@ public class FileManager {
 			setPrivateParameters(data);
 		}	
 		setMachineLearningProfile(data, conf);
-		//Set MapVMConfigurations
-		data.setMapVMConfigurations(null);
 		
 		//Generate Json
 		ObjectMapper mapper = new ObjectMapper();
@@ -317,6 +321,9 @@ public class FileManager {
 	}
 	
 	private void setMachineLearningProfile(InstanceDataMultiProvider data, Configuration conf) {
+		if(conf.getTechnology().contains("Hadoop")){
+			this.setMachineLearningHadoop(data);
+		}else{
 		//Set mapJobMLProfile - MACHINE LEARNING
 		Map<String, JobMLProfile> jmlMap = new HashMap<String, JobMLProfile>();
 		List<String> par = new ArrayList<String>();
@@ -332,7 +339,7 @@ public class FileManager {
 		jML.setMapJobMLProfile(jmlMap);
 		data.setMapJobMLProfiles(jML);
 
-		
+		}
 	}
 	
 	public String getPath(){
@@ -507,4 +514,52 @@ public class FileManager {
 //		return res;
 //		
 //	}
+	private void setMachineLearningHadoop(InstanceDataMultiProvider data){
+		//Set mapJobMLProfile - MACHINE LEARNING
+				Map<String, JobMLProfile> jmlMap = new HashMap<String, JobMLProfile>();
+				  JSONParser parser = new JSONParser();
+				try {
+					for(ClassDesc cd : Configuration.getCurrent().getClasses()){
+						Map<String,SVRFeature> map=new HashMap<String,SVRFeature>();
+			            Object obj = parser.parse(new FileReader( cd.getMlPath()));
+			           
+			            JSONObject jsonObject = (JSONObject) obj;
+				            double b = (double) jsonObject.get("b");
+				            double mu_t = (double) jsonObject.get("mu_t");
+				            double sigma_t=(double) jsonObject.get("sigma_t");
+				            JSONObject parameter = (JSONObject) jsonObject.get("mlFeatures");
+				            Iterator iterator = parameter.keySet().iterator();
+				            while (iterator.hasNext()) {
+				            	String key=(String)iterator.next();
+				            	JSONObject locObj=(JSONObject) parameter.get(key);
+				            	SVRFeature feat=new SVRFeature();
+				            	feat.setMu((double)locObj.get("mu"));
+				            	feat.setSigma((double)locObj.get("sigma"));
+				            	feat.setW((double)locObj.get("w"));
+				            	map.put(key, feat);
+				            }
+				 
+						jmlMap.put(String.valueOf(cd.getId()), new JobMLProfile(map,b,mu_t,sigma_t));
+					}
+		           
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        }
+				JobMLProfilesMap jML = JobMLProfilesMapGenerator.build();
+				jML.setMapJobMLProfile(jmlMap);
+				data.setMapJobMLProfiles(jML);
+
+		
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
