@@ -75,7 +75,7 @@ public class PrivateConfigPage extends WizardPage{
         Label nNodeLab=new Label(container,SWT.NONE);
         nNodeLab.setText("Set number of nodes");
         Label cpuLabel=new Label(container,SWT.NONE);
-        cpuLabel.setText("Cpu per cluster");        
+        cpuLabel.setText("Cpu per node");        
         nNodesText=new Text(container,SWT.BORDER);
         cpuText=new Text(container,SWT.BORDER);
         Label memLabel=new Label(container,SWT.NONE);

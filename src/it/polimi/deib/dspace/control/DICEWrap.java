@@ -99,6 +99,7 @@ public class DICEWrap {
 							System.out.println(e.getMessage());
 						}
 				}
+				/*
 				//TODO: just for debug, remove this cycle
 				for(ClassDesc c : conf.getClasses()){
 					System.err.println("Class: " + c.getId());
@@ -108,7 +109,7 @@ public class DICEWrap {
 							System.err.println("\t\t" + a + " : " + c.getAltDtsmHadoop().get(alt).get(a));
 						}
 					}
-				}
+				}*/
 				break;
 			default:
 				System.err.println("Unknown technology: "+conf.getTechnology());

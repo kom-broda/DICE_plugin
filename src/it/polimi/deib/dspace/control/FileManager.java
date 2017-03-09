@@ -311,6 +311,7 @@ public class FileManager {
 
 		PublicCloudParametersMap pub = PublicCloudParametersMapGenerator.build();
 		pub.setMapPublicCloudParameters(classdesc2);
+
 		
 		data.setMapPublicCloudParameters(pub);
 	}
@@ -330,6 +331,8 @@ public class FileManager {
 		JobMLProfilesMap jML = JobMLProfilesMapGenerator.build();
 		jML.setMapJobMLProfile(jmlMap);
 		data.setMapJobMLProfiles(jML);
+
+		
 	}
 	
 	public String getPath(){
