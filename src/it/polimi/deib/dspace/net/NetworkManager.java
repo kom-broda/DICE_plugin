@@ -37,6 +37,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import it.polimi.deib.dspace.control.Configuration;
+import it.polimi.deib.dspace.control.GeneralConfig;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -61,8 +62,8 @@ import java.util.List;
 public class NetworkManager {
 	
 	private static NetworkManager instance;
-	private static String rootEndpoint = "http://localhost:8000";
-	private static String vmConfigsEndpoint = "http://localhost:8080/vm-types";
+	private static String rootEndpoint = GeneralConfig.getCurrent().getServerID();
+	private static String vmConfigsEndpoint = GeneralConfig.getCurrent().getBackEndID()+"/vm-types";
 	private static String modelUploadEndpoint = rootEndpoint+"/files/view/upload";
 	private static String uploadRest=rootEndpoint+"/files/upload";
 	public static NetworkManager getInstance(){

@@ -33,6 +33,7 @@ public class GeneralConfig {
 	private String savingDir;
 	private String serverID;
 	private int timeToWait;
+	private String backEndID;
 	public GeneralConfig(){
 		loadConfiguration();
 	}
@@ -69,7 +70,8 @@ public class GeneralConfig {
 		File f = new File(filePath);
 		if(!(f.exists())) { 
 			this.timeToWait=defaultTime;
-			this.serverID="http://specclient1.dei.polimi.it:8018/";
+			this.serverID="http://localhost:8000/";
+			this.backEndID="http://localhost:8080";
 			Path currentRelativePath = Paths.get("");
 			String s = currentRelativePath.toAbsolutePath().toString();
 			this.savingDir=s;
@@ -79,6 +81,7 @@ public class GeneralConfig {
 				writer.println(serverID);
 			    writer.println(Integer.toString(defaultTime));
 			    writer.println(s);
+			    writer.println(this.backEndID);
 			    writer.close();
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -109,6 +112,7 @@ public class GeneralConfig {
 			    this.serverID=sp[0];
 			    this.timeToWait=Integer.parseInt(sp[1]);
 			    this.savingDir=sp[2];
+			    this.backEndID=sp[3];
 			    
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -122,6 +126,13 @@ public class GeneralConfig {
 				}
 			}
 		}
+	}
+	
+	public String getBackEndID(){
+		return this.backEndID;
+	}
+	public void setBackEndID(String bc){
+		this.backEndID=bc;
 	}
 	
 	
