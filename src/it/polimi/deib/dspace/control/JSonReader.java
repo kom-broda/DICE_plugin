@@ -109,18 +109,21 @@ try {
 	        Document doc = dBuilder.parse(inputFile);
 	        doc.getDocumentElement().normalize();
 	        Element root=doc.getDocumentElement();
-	        NodeList nodes=root.getElementsByTagName("DICERProfile:VMsCluster");
+	        NodeList nodes=root.getElementsByTagName("DDSM:DdsmVMsCluster");
 	        Node n=nodes.item(0);
 	        NamedNodeMap atributes=n.getAttributes();
-	        Node nodeAttrNumVm=atributes.getNamedItem("vmInstance");
+	        Node nodeAttrNumVm=atributes.getNamedItem("instances");
 	        nodeAttrNumVm.setTextContent(this.classNumVM.get(id).toString());
 	        Node nodeAttrType=atributes.getNamedItem("genericSize");
 	        nodeAttrType.setTextContent(this.classTypeVM.get(id));
-	        NodeList n1=n.getChildNodes();
-	        NamedNodeMap providerEl= root.getElementsByTagName("provider").item(0).getAttributes();
-	        Node provAtt=providerEl.getNamedItem("type");
-	        provAtt.setTextContent(provider);
-	      // write the content into xml file
+	        if(!this.isAttribtuePresent(atributes, "provider")){
+	        	Element el=(Element) n;
+	            el.setAttribute("provider", this.classTypeVM.get(id));
+	        }else{
+	        	Node nodeAttrType1=atributes.getNamedItem("provider");
+		        nodeAttrType1.setTextContent(this.classTypeVM.get(id));
+		    }
+	        // write the content into xml file
 	 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 	 		Transformer transformer = transformerFactory.newTransformer();
 	 		DOMSource source = new DOMSource(doc);
@@ -197,5 +200,16 @@ try {
 			e.printStackTrace();
 		}
 		
+	}
+	private boolean isAttribtuePresent(NamedNodeMap element, String attribute) {
+	    Boolean result = false;
+	    try {
+	        Node value = element.getNamedItem(attribute);
+	        if (value != null){
+	            result = true;
+	        }
+	    } catch (Exception e) {}
+
+	    return result;
 	}
 }
