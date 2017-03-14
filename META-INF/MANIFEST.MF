@@ -31,9 +31,8 @@ Bundle-ClassPath: imported_packages/json-simple-1.1.1.jar,
  imported_packages/commons-io-2.5.jar,
  imported_packages/json-simple-1.1.1-sources.jar,
  imported_packages/SPACE4Cloud-shared-0.2.11-20170131.153422-1.jar,
- imported_packages/jackson-core-2.8.1.jar,
- imported_packages/jackson-databind-2.8.5.jar,
- imported_packages/jackson-annotations-2.8.0.jar
- imported_packages/jackson-core-2.8.1.jar,
- imported_packages/jackson-databind-2.8.5.jar,
- imported_packages/jackson-annotations-2.8.0.jar
+ imported_packages/jackson-annotations-2.8.0.jarimported_packages/jackson-core-2.8.1.jar,
+ imported_packages/jackson-annotations-2.8.0.jar,
+ imported_packages/jackson-databind-2.7.4.jar,
+ imported_packages/jackson-core-2.7.4.jar,
+ imported_packages/jackson-datatype-jdk8-2.7.4.jar
