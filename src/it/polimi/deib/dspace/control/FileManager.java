@@ -29,6 +29,8 @@ import org.xml.sax.SAXException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+
 import it.polimi.diceH2020.SPACE4Cloud.shared.generators.ClassParametersGenerator;
 import it.polimi.diceH2020.SPACE4Cloud.shared.generatorsDataMultiProvider.InstanceDataMultiProviderGenerator;
 import it.polimi.diceH2020.SPACE4Cloud.shared.generatorsDataMultiProvider.JobMLProfileGenerator;
@@ -91,14 +93,25 @@ public class FileManager {
 				System.out.println("Renaming " + f.getName());
 				if(conf.getTechnology().equals("Hadoop"))
 					putPlaceHolder("(starta ", f.getName(), "def");
+				if(Configuration.getCurrent().getIsPrivate()){
+
+					f.renameTo(new File(path+conf.getID()+"J"+cdid+"inHouse"+alt+".def"));
+					f.delete();
+				}else{
 				f.renameTo(new File(path + conf.getID() + "J" + cdid + alt.replaceAll("-", "") + ".def"));
 				f.delete();
+				}
 			}
 			if(f.getName().endsWith(".net")){
 				System.out.println("Renaming " + f.getName());
 				putPlaceHolder(s, f.getName(), "net");
+				if(Configuration.getCurrent().getIsPrivate()){
+					f.renameTo(new File(path+conf.getID()+"J"+cdid+"inHouse"+alt+".net"));
+					f.delete();
+				}else{
 				f.renameTo(new File(path + conf.getID() + "J" + cdid + alt.replaceAll("-", "") + ".net"));
 				f.delete();
+				}
 			}
 		}
 	}
@@ -182,12 +195,13 @@ public class FileManager {
 			}
 		}
 		else{
+			data.setMapPublicCloudParameters(null);
 			setPrivateParameters(data);
 		}	
 		setMachineLearningProfile(data, conf);
-		
 		//Generate Json
 		ObjectMapper mapper = new ObjectMapper();
+		mapper.registerModule(new Jdk8Module());
 		
 		try {
 			mapper.writerWithDefaultPrettyPrinter().writeValue(new File(path + conf.getID()+".json"), data);
@@ -214,7 +228,7 @@ public class FileManager {
 			vmConf.setCore(v.getCore());
 			vmConf.setMemory(v.getMemory());
 			Optional<Double> opt=Optional.of(v.getCost());
-			vmConf.setCost(opt);
+			vmConf.setCost(Optional.of(v.getCost()));
 			mapVMConfigurations.put(v.getName(), vmConf);
 		}
 		priMap.setMapVMConfigurations(mapVMConfigurations);
@@ -558,12 +572,6 @@ public class FileManager {
 		
 		
 	}
-	
-	
-	
-	
-	
-	
 	
 	
 	
