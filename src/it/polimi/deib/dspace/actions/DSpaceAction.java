@@ -1,3 +1,21 @@
+/*
+Copyright 2017 Arlind Rufi
+Copyright 2017 Gianmario Pozzi
+Copyright 2017 Giorgio Pea
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 package it.polimi.deib.dspace.actions;
 
 
@@ -22,13 +40,7 @@ import org.eclipse.swt.widgets.Shell;
 import it.polimi.deib.dspace.control.Configuration;
 
 /**
- * Our sample action implements workbench action delegate.
- * The action proxy will be created by the workbench and
- * shown in the UI. When the user tries to use the action,
- * this delegate will be created and execution will be 
- * delegated to it.
- * TODO: remove auto generated doc
- * @see IWorkbenchWindowActionDelegate
+ * This action activates the wizard and manages the preferences panel.
  */
 public class DSpaceAction implements IWorkbenchWindowActionDelegate {
 	/**
@@ -66,7 +78,6 @@ public class DSpaceAction implements IWorkbenchWindowActionDelegate {
 			ConfigurationDialog con=new ConfigurationDialog(new Shell());
 			con.load();
 			con.setView();
-			
 		}
 	}
 
